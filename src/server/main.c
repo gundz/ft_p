@@ -1,4 +1,5 @@
 #include <common.h>
+#include <libft.h>
 
 int
 main(void)
@@ -33,33 +34,35 @@ main(void)
 
 		if (sock_err != -1)
 		{
-			while (1)
+			sock_err = listen(sock, 5);
+			printf("listen on port %d\n", PORT);
+
+			if (sock_err != -1)
 			{
-				sock_err = listen(sock, 5);
-				printf("listen on port %d\n", PORT);
+				/* Attente pendant laquelle le client se connecte */
+				printf("Wait until client connect on port: %d...\n\n", PORT);
 
-				if (sock_err != -1)
-				{
-					/* Attente pendant laquelle le client se connecte */
-					printf("Wait until client connect on port: %d...\n\n", PORT);
+				csock = accept(sock, (SOCKADDR*)&csin, &crecsize);
 
-					csock = accept(sock, (SOCKADDR*)&csin, &crecsize);
+				printf("client connect on socket %d with %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
 
-					printf("client connect on socket %d with %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
+				char			buf[BUF_SIZE];
+				int				n;
+				// while (1)
+				// {
+					n = recv(csock, buf, BUF_SIZE, 0);
+					buf[n] = '\0';
+					// if (ft_strcmp("exit", buf) == 0)
+						// break ;
+					if (n > 0)
+						printf("size : %d receive : %s\n", n, buf);
+				// }
 
-					sock_err = send(csock, "Yep !", BUF_SIZE, 0);
-					if (sock_err != -1)
-						printf("transmission send\n");
-					else
-						perror("transmission");
-					shutdown(csock, 2);
-
-					close(csock);
-					printf("client socket closed\n\n");
-				}
-				else
-					perror("listen");
+				close(csock);
+				printf("client socket closed\n\n");
 			}
+			else
+				perror("listen");
 			close(sock);
 			printf("server closed\n");
 		}
