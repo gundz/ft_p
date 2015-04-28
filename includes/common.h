@@ -18,5 +18,6 @@ typedef struct in_addr IN_ADDR;
 # include <stdlib.h>
 
 # define PORT 80
+# define BUF_SIZE 32
 
 #endif
