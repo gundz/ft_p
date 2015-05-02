@@ -22,15 +22,25 @@ main(void)
 	{
 		printf("Connexion à %s sur le port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
 
-		char	*buf;
-		get_next_line(0, &buf);
-		sock_err = send(sock, &buf, BUF_SIZE, 0);
-		if (sock_err != -1)
-			printf("transmission send\n");
-		else
-			perror("transmission");
-		shutdown(sock, 2);
+		while (1)
+		{
+			char	*buf;
 
+			ft_putstr("$>: ");
+			get_next_line(0, &buf);
+			ft_putchar(10);
+			
+			int size = ft_strlen(buf) + 1;
+			sock_err = send(sock, &size, sizeof(int), 0);
+			if (sock_err == -1)
+				perror("transmission size");
+			sock_err = send(sock, &(*buf), size, 0);
+			if (sock_err == -1)
+				perror("transmission");
+			if (ft_strcmp(buf, "exit") == 0)
+				break ;
+		}
+		shutdown(sock, 2);
 	}
 	else
 		perror("connect");

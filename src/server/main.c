@@ -39,7 +39,6 @@ main(void)
 
 			if (sock_err != -1)
 			{
-				/* Attente pendant laquelle le client se connecte */
 				printf("Wait until client connect on port: %d...\n\n", PORT);
 
 				csock = accept(sock, (SOCKADDR*)&csin, &crecsize);
@@ -48,15 +47,19 @@ main(void)
 
 				char			buf[BUF_SIZE];
 				int				n;
-				// while (1)
-				// {
-					n = recv(csock, buf, BUF_SIZE, 0);
+				while (1)
+				{
+					int		size;
+
+					recv(csock, &size, sizeof(int), 0);
+					
+					n = recv(csock, buf, size, 0);
 					buf[n] = '\0';
-					// if (ft_strcmp("exit", buf) == 0)
-						// break ;
+					if (ft_strcmp("exit", buf) == 0)
+						break ;
 					if (n > 0)
-						printf("size : %d receive : %s\n", n, buf);
-				// }
+						printf("size : %d receive : %s\n", size, buf);
+				}
 
 				close(csock);
 				printf("client socket closed\n\n");
