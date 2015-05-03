@@ -7,6 +7,7 @@
 # include <arpa/inet.h>
 # include <unistd.h>
 # include <netdb.h>
+
 typedef int SOCKET;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;

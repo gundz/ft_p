@@ -17,7 +17,7 @@ clean:
 fclean:
 	@ make fclean -C libft
 	@ make fclean -C makefiles/client
-	@ make clean -C makefiles/server
+	@ make fclean -C makefiles/server
 
 re: fclean all
 
