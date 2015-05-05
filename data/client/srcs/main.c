@@ -1,16 +1,5 @@
-#include <common.h>
+#include <libftsocket.h>
 #include <libft.h>
-
-SOCKET
-open_socket(void)
-{
-	SOCKET			sock;
-
-	sock = socket(AF_INET, SOCK_STREAM, 0);
-	if (sock == -1)
-		perror("socket");
-	return (sock);
-}
 
 SOCKET
 connect_client(const char *addr)

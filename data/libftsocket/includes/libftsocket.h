@@ -1,5 +1,5 @@
-#ifndef COMMON_H
-# define COMMON_H
+#ifndef LIBFTSOCKET_H
+# define LIBFTSOCKET_H
 
 # include <sys/types.h>
 # include <sys/socket.h>
@@ -8,18 +8,20 @@
 # include <unistd.h>
 # include <netdb.h>
 
+# include <unistd.h>
+# include <stdlib.h>
+
 typedef int SOCKET;
 typedef int SOCKET_ERR;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
-# include <errno.h>
-# include <stdio.h>
-# include <unistd.h>
-# include <stdlib.h>
-
 # define PORT 80
-# define BUF_SIZE 32
+
+#include <errno.h>
+#include <stdio.h>
+
+SOCKET			open_socket(void);
 
 #endif
