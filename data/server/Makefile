@@ -2,15 +2,15 @@ NAME = ../../server
 
 CC = gcc
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror -g
 
 LIB_PATH = ../../libft/
 LIB_INC = $(LIB_PATH)includes
 LIB_NAME = libft.a
 
-PATH_INC = ../../includes/
+PATH_INC = ../libftsocket/includes/
 PATH_OBJ = obj
-PATH_SRC = ../../src/server
+PATH_SRC = srcs
 
 SRC =	main.c
 

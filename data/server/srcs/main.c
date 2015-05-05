@@ -1,6 +1,34 @@
 #include <common.h>
 #include <libft.h>
 
+#include <stdlib.h>
+
+char *
+rec_msg(SOCKET socket)
+{
+	int		size;
+	int		n;
+	char	*msg;
+
+	n = recv(socket, &size, sizeof(int), 0);
+	if (n == -1)
+	{
+		perror("msg size");
+		return (NULL);
+	}
+	if (!(msg = (char *)malloc(sizeof(char) * (size + 1))))
+		return (NULL);
+	n = recv(socket, msg, size, 0);
+	msg[n] = '\0';
+	if (n == -1)
+	{
+		perror("msg");
+		free(msg);
+		return (NULL);
+	}
+	return (msg);
+}
+
 int
 main(void)
 {
@@ -45,20 +73,23 @@ main(void)
 
 				printf("client connect on socket %d with %s:%d\n", csock, inet_ntoa(csin.sin_addr), htons(csin.sin_port));
 
-				char			buf[BUF_SIZE];
-				int				n;
 				while (1)
 				{
-					int		size;
+					char	*msg;
 
-					recv(csock, &size, sizeof(int), 0);
-					
-					n = recv(csock, buf, size, 0);
-					buf[n] = '\0';
-					if (ft_strcmp("exit", buf) == 0)
-						break ;
-					if (n > 0)
-						printf("size : %d receive : %s\n", size, buf);
+					if ((msg = rec_msg(csock)) != NULL)
+					{
+						ft_putstr("receive command : \"");
+						ft_putstr(msg);
+						ft_putstr("\"\n");
+						/*		commands		*/
+						if (ft_strcmp("exit", msg) == 0)
+						{
+							free(msg);
+							break ;
+						}
+						free(msg);
+					}
 				}
 
 				close(csock);

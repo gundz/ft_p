@@ -9,6 +9,7 @@
 # include <netdb.h>
 
 typedef int SOCKET;
+typedef int SOCKET_ERR;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;

@@ -2,15 +2,26 @@
 #include <libft.h>
 
 SOCKET
+open_socket(void)
+{
+	SOCKET			sock;
+
+	sock = socket(AF_INET, SOCK_STREAM, 0);
+	if (sock == -1)
+		perror("socket");
+	return (sock);
+}
+
+SOCKET
 connect_client(const char *addr)
 {
 	SOCKET			sock;
 	SOCKADDR_IN 	sin;
-	int				sock_err;
 	socklen_t		recsize = sizeof(sin);
+	SOCKET_ERR		sock_err;
 
-	/* Création de la socket */
-	sock = socket(AF_INET, SOCK_STREAM, 0);
+	if ((sock = open_socket()) == -1)
+		return (sock);
 
 	/* Configuration de la connexion */
 	sin.sin_addr.s_addr = inet_addr(addr);
