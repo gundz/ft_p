@@ -24,4 +24,8 @@ typedef struct in_addr IN_ADDR;
 
 SOCK			open_socket(void);
 
+SOCK_ERR		send_msg(SOCK socket, char *msg);
+SOCK_ERR		send_msg_input(SOCK socket, char **input);
+char *			rec_msg(SOCK socket);
+
 #endif

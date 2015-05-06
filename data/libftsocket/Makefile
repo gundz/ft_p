@@ -17,6 +17,10 @@ PATH_INC = includes
 PATH_OBJ = obj
 PATH_SRC = srcs
 
+LIBFT_PATH = ../../libft/
+LIBFT_INC = -I $(LIBFT_PATH)includes
+LIBFT_NAME = $(LIBFT_PATH)libft.a
+
 SRC +=	\
 		io_socket.c \
 
@@ -32,7 +36,7 @@ $(NAME) : namemes $(OBJ)
 $(PATH_OBJ)/%.o : $(addprefix $(PATH_SRC)/, %.c)
 	@ echo -n .
 	@ mkdir -p $(PATH_OBJ)
-	@ $(CC) $(CFLAGS) -o $@ -c $^ -I $(PATH_INC)
+	@ $(CC) $(CFLAGS) -o $@ -c $^ -I $(PATH_INC) $(LIBFT_INC)
 
 clean :
 	@ rm -rf $(PATH_OBJ)

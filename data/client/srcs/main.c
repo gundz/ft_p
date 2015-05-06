@@ -33,6 +33,7 @@ send_msg(SOCK socket, char *msg)
 	SOCK_ERR	sock_err;
 	int			size;
 
+	sock_err = 0;
 	size = ft_strlen(msg);
 	if (size > 0)
 	{
