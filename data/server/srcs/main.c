@@ -4,7 +4,7 @@
 #include <stdlib.h>
 
 char *
-rec_msg(SOCKET socket)
+rec_msg(SOCK socket)
 {
 	int		size;
 	int		n;
@@ -34,12 +34,12 @@ main(void)
 {
 	/* Socket et contexte d'adressage du serveur */
 	SOCKADDR_IN		sin;
-	SOCKET			sock;
+	SOCK			sock;
 	socklen_t recsize = sizeof(sin);
 	
 	/* Socket et contexte d'adressage du client */
 	SOCKADDR_IN		csin;
-	SOCKET			csock;
+	SOCK			csock;
 	socklen_t crecsize = sizeof(csin);
 	
 	int 			sock_err;

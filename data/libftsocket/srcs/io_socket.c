@@ -1,9 +1,9 @@
 #include <libftsocket.h>
 
-SOCKET
+SOCK
 open_socket(void)
 {
-	SOCKET			sock;
+	SOCK			sock;
 
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1)

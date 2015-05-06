@@ -11,8 +11,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
-typedef int SOCKET;
-typedef int SOCKET_ERR;
+typedef int SOCK;
+typedef int SOCK_ERR;
 typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
@@ -22,6 +22,6 @@ typedef struct in_addr IN_ADDR;
 #include <errno.h>
 #include <stdio.h>
 
-SOCKET			open_socket(void);
+SOCK			open_socket(void);
 
 #endif
