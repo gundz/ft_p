@@ -10,7 +10,7 @@ CC =			gcc
 
 CFLAGS =		-Wall -Werror -Wextra
 
-LIB_NAMES =		-lft -lftsocket
+LIB_NAMES =		-lftsocket -lft
 LIB_PATH =		../libft/ ../libftsocket/
 
 #LIB_SUPP =		-lm

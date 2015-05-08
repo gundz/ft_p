@@ -3,32 +3,6 @@
 
 #include <stdlib.h>
 
-char *
-rec_msg(SOCK socket)
-{
-	int		size;
-	int		n;
-	char	*msg;
-
-	n = recv(socket, &size, sizeof(int), 0);
-	if (n == -1)
-	{
-		perror("msg size");
-		return (NULL);
-	}
-	if (!(msg = (char *)malloc(sizeof(char) * (size + 1))))
-		return (NULL);
-	n = recv(socket, msg, size, 0);
-	msg[n] = '\0';
-	if (n == -1)
-	{
-		perror("msg");
-		free(msg);
-		return (NULL);
-	}
-	return (msg);
-}
-
 int
 main(void)
 {

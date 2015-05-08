@@ -27,37 +27,6 @@ connect_client(const char *addr)
 	return (sock);
 }
 
-SOCK_ERR
-send_msg(SOCK socket, char *msg)
-{
-	SOCK_ERR	sock_err;
-	int			size;
-
-	sock_err = 0;
-	size = ft_strlen(msg);
-	if (size > 0)
-	{
-		sock_err = send(socket, &size, sizeof(int), 0);
-		if (sock_err == -1)
-			perror("send_msg size");
-		sock_err = send(socket, &(*msg), size, 0);
-		if (sock_err == -1)
-			perror("send_msg");
-	}
-	return (sock_err);
-}
-
-SOCK_ERR
-send_msg_input(SOCK socket, char **input)
-{
-	SOCK_ERR	sock_err;
-
-	ft_putstr("$>: ");
-	get_next_line(0, input);
-	sock_err = send_msg(socket, *input);
-	return (sock_err);
-}
-
 int
 main(void)
 {

@@ -5,6 +5,7 @@ NAME =			libftsocket.a
 
 SRCS =			\
 				io_socket.c \
+				msg.c \
 
 CC =			gcc
 
