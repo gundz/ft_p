@@ -1,28 +1,30 @@
+DATA_PATH =	data/
+
 all: libft libftsocket server client
 
 libft:
-	@ make -C libft/
+	@ make -sC $(DATA_PATH)libft/
 
 libftsocket:
-	@ make -C data/libftsocket
+	@ make -sC $(DATA_PATH)libftsocket
 
 server:
-	@ make -C data/server
+	@ make -sC $(DATA_PATH)/server
 
 client:
-	@ make -C data/client
+	@ make -sC $(DATA_PATH)/client
 
 clean:
-	@ make clean -C libft
-	@ make clean -C data/libftsocket
-	@ make clean -C data/client
-	@ make clean -C data/server
+	@ make clean -sC libft
+	@ make clean -sC $(DATA_PATH)libftsocket
+	@ make clean -sC $(DATA_PATH)client
+	@ make clean -sC $(DATA_PATH)server
 
 fclean:
-	@ make fclean -C libft
-	@ make fclean -C data/libftsocket
-	@ make fclean -C data/client
-	@ make fclean -C data/server
+	@ make fclean -sC $(DATA_PATH)libft
+	@ make fclean -sC $(DATA_PATH)libftsocket
+	@ make fclean -sC $(DATA_PATH)client
+	@ make fclean -sC $(DATA_PATH)server
 
 re: fclean all
 
