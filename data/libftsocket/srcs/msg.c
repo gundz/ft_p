@@ -28,7 +28,6 @@ rec_msg(SOCK socket)
 	return (msg);
 }
 
-
 SOCK_ERR
 send_msg(SOCK socket, char *msg)
 {
