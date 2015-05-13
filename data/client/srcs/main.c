@@ -19,10 +19,39 @@ connect_client(const char *addr)
 	if (sock_err == -1)
 	{
 		perror("connect");
-		return (sock);
+		close_socket(sock);
+		return (NULL);
 	}
 	printf("Connexion à %s sur le port %d\n", inet_ntoa(sock->sin.sin_addr), htons(sock->sin.sin_port));
 	return (sock);
+}
+
+void
+receive_ls(t_socket *socket)
+{
+	uint32_t		size;
+	t_list			*files;
+	int				n;
+	t_list			*lstwalker;
+
+	n = recv(socket->sock, &size, sizeof(uint32_t), 0);
+	if (n == -1)
+	{
+		perror("receive_ls size");
+		return ;
+	}
+	files = NULL;
+	while (size--)
+		lst_push_back(&files, rec_msg(socket->sock));
+	lstwalker = files;
+	while (lstwalker != NULL)
+	{
+		printf("%s\n", (char *)lstwalker->data);
+		if (lstwalker->next == NULL)
+			break ;
+		lstwalker = lstwalker->next;
+	}
+	lst_free(&files, 1);
 }
 
 int
@@ -39,7 +68,11 @@ main(void)
 		input = NULL;
 		if (send_msg_input(sock->sock, &input) != -1)
 		{
-			if (ft_strcmp(input, "exit") == 0)
+			if (ft_strcmp(input, "ls") == 0)
+			{
+				receive_ls(sock);
+			}
+			if (ft_strcmp(input, "exit") == 0 || ft_strcmp(input, "shutdown") == 0)
 			{
 				free(input);
 				break ;
