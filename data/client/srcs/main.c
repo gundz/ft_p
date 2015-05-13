@@ -26,32 +26,79 @@ connect_client(const char *addr)
 	return (sock);
 }
 
-void
-receive_ls(t_socket *socket)
+typedef struct s_file_data
 {
-	uint32_t		size;
-	t_list			*files;
-	int				n;
-	t_list			*lstwalker;
+	uint32_t	size;
+	uint32_t	block_size;
+	uint32_t	nb_block;
+}				t_file_data;
 
-	n = recv(socket->sock, &size, sizeof(uint32_t), 0);
+typedef struct	s_file
+{
+	uint32_t	block_id;
+	char		*block;
+}				t_file;
+
+t_list *
+rec_file_data(t_socket *sock, t_file_data *file_data)
+{
+	char			buf[file_data->block_size + 1];
+	t_list			*file;
+	int				n;
+	unsigned int	i;
+	int				size;
+
+	file = NULL;
+	i = 0;
+	while (i < file_data->nb_block)
+	{
+		printf("%d%%\n", (i * file_data->block_size) * 100 / file_data->size);
+		n = recv(sock->sock, &size, sizeof(int), 0);
+		if (n == -1)
+		{
+			perror("rec_file_data size");
+			return (NULL);
+		}
+		n = recv(sock->sock, &buf, size, 0);
+		if (n == -1)
+		{
+			perror("rec_file_data data");
+			return (NULL);
+		}
+		buf[n] = '\0';
+		lst_push_back(&file, ft_strdup(buf));
+		i++;
+	}
+	return (file);
+}
+
+t_list *
+rec_file(t_socket *sock)
+{
+	t_file_data		file_data;
+	t_list			*file;
+	int				n;
+
+	n = recv(sock->sock, &file_data, sizeof(t_file_data), 0);
 	if (n == -1)
 	{
-		perror("receive_ls size");
-		return ;
+		perror("receive file_data");
+		return (NULL);
 	}
-	files = NULL;
-	while (size--)
-		lst_push_back(&files, rec_msg(socket->sock));
-	lstwalker = files;
+	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
+	file = rec_file_data(sock, &file_data);
+
+	t_list			*lstwalker;
+	lstwalker = file;
 	while (lstwalker != NULL)
 	{
-		printf("%s\n", (char *)lstwalker->data);
+		printf("%s", (char *)lstwalker->data);
 		if (lstwalker->next == NULL)
 			break ;
 		lstwalker = lstwalker->next;
 	}
-	lst_free(&files, 1);
+	lst_free(&file, 1);
+	return (file);
 }
 
 int
@@ -68,6 +115,11 @@ main(void)
 		input = NULL;
 		if (send_msg_input(sock->sock, &input) != -1)
 		{
+			if (ft_strcmp(input, "get") == 0)
+			{
+				rec_file(sock);
+			}
+
 			if (ft_strcmp(input, "ls") == 0)
 			{
 				receive_ls(sock);

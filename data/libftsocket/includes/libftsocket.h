@@ -11,6 +11,8 @@
 # include <unistd.h>
 # include <stdlib.h>
 
+#include <libft.h>
+
 typedef int SOCK;
 typedef int SOCK_ERR;
 typedef struct sockaddr_in SOCKADDR_IN;
@@ -35,5 +37,9 @@ void			close_socket(t_socket *socket);
 SOCK_ERR		send_msg(SOCK socket, char *msg);
 SOCK_ERR		send_msg_input(SOCK socket, char **input);
 char *			rec_msg(SOCK socket);
+
+t_list			*list_dir(const char *path);
+void			send_ls(t_socket *sock, const char *dir);
+void			receive_ls(t_socket *socket);
 
 #endif

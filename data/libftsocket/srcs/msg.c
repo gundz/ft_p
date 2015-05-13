@@ -8,7 +8,6 @@ rec_msg(SOCK socket)
 	int		n;
 	char	*msg;
 
-	ft_strlen("test");
 	n = recv(socket, &size, sizeof(int), 0);
 	if (n == -1)
 	{

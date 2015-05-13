@@ -2,56 +2,79 @@
 #include <libft.h>
 #include <server.h>
 
-#include <dirent.h>
+typedef struct s_file_data
+{
+	uint32_t	size;
+	uint32_t	block_size;
+	uint32_t	nb_block;
+}				t_file_data;
+
+typedef struct	s_file
+{
+	uint32_t	block_id;
+	char		*block;
+}				t_file;
+
+#define BUF_SIZE 32
+#include <fcntl.h>
 
 t_list *
-list_dir(const char *path)
+store_file(const char *path, t_file_data *file_data)
 {
-	DIR				*dir;
-	struct dirent	*file;
-	t_list			*files;
+	int			fd;
+	char		buf[BUF_SIZE + 1];
+	t_list		*file;
+	int			n;
+	int			nb_block;
 
+	fd = open(path, O_RDONLY);
+	if (fd == -1)
+		perror("");
+	file = NULL;
+	nb_block = 0;
+	while ((n = read(fd, &buf, BUF_SIZE)))
+	{
+		buf[n] = '\0';
+		lst_push_back(&file, ft_strdup(buf));
+		nb_block++;
+	}
+	close(fd);
+	file_data->size = lst_csize(file);
+	file_data->block_size = BUF_SIZE;
+	file_data->nb_block = nb_block;
+	return (file);
+}
 
-	dir = opendir(path);
-	if (dir == NULL)
-	{
-		perror("opendir");
-		return (NULL);
-	}
-	files = NULL;
-	while ((file = readdir(dir)))
-	{
-		lst_push_back(&files, ft_strdup(file->d_name));
-	}
-	lst_b_sort(&files, &ft_strcmp, 0);
-	closedir(dir);
-	return (files);
+SOCK_ERR
+send_struct(t_socket *sock, void *struc, int size)
+{
+	SOCK_ERR			sock_err;
+	char				*super = struc;
+
+	sock_err = send(sock->sock, &(*super), size, 0);
+	if (sock_err == -1)
+		perror("send struct");
+	return (sock_err);
 }
 
 void
-send_ls(t_socket *sock, const char *dir)
+send_file(t_socket *sock, const char *path)
 {
-	t_list			*files;
-	uint32_t		size;
-	SOCK_ERR		sock_err;
+	t_list			*file;
+	t_file_data		file_data;
 	t_list			*lstwalker;
 
-	files = list_dir(dir);
-	size = lst_count(files);
-	sock_err = send(sock->sock, &size, sizeof(uint32_t), 0);
-	if (sock_err == -1)
-		perror("send_ls size");
-	lstwalker = files;
+	file = store_file(path, &file_data);
+	send_struct(sock, &file_data, sizeof(t_file_data));
+	lstwalker = file;
 	while (lstwalker != NULL)
 	{
-		sock_err = send_msg(sock->sock, (char *)lstwalker->data);
-		if (sock_err == -1)
-			perror("send_ls file");
+		send_msg(sock->sock, (char *)lstwalker->data);
 		if (lstwalker->next == NULL)
 			break ;
 		lstwalker = lstwalker->next;
 	}
-	lst_free(&files, 1);
+	lst_free(&file, 1);
 }
 
 void
@@ -62,6 +85,11 @@ talk(t_socket *csock, int *run, int *connected)
 	if ((msg = rec_msg(csock->sock)) != NULL)
 	{
 		printf("receive command : \"%s\"\n", msg);
+
+		if (ft_strcmp("get", msg) == 0)
+		{
+			send_file(csock, "Makefile");
+		}
 
 		if (ft_strcmp("ls", msg) == 0)
 		{
