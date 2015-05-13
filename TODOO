@@ -1,0 +1,33 @@
+/*
+CLIENT : INPUT COMMANDE
+SERVEUR : check commande à partir d'une fonction
+qui checke dans une liste pour le message et attribue une fonction à 
+partir d'un pointeur sur fonction
+renvois un success ou error au client
+et le serveur renvois le code correspondant à l'échange en cour (début transfert etc...)
+et l'échange commence
+
+amélioration : codes dans un fichier sous forme "code- message" (cf rfc 959)
+structure qui contient code + message + accès à partir d'une fonction
+
+serveur
+{
+	msg = get_msg()
+	ret = check_msg(msg)
+	if (ret == OK)
+	{
+		send_msg(ok)
+		get_function(ret);
+	}
+}
+
+client
+{
+	send_msg()
+	ret = get_msg()
+	if (ret == OK)
+	{
+		get_function()
+	}
+}
+*/

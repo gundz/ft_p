@@ -5,6 +5,7 @@ NAME =			../../server
 
 SRCS =			\
 				main.c \
+				launch.c \
 
 CC =			gcc
 
