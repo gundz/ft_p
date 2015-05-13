@@ -17,12 +17,20 @@ typedef struct sockaddr_in SOCKADDR_IN;
 typedef struct sockaddr SOCKADDR;
 typedef struct in_addr IN_ADDR;
 
+typedef struct		s_socket
+{
+	SOCKADDR_IN		sin;
+	SOCK			sock;
+	socklen_t		size;
+}					t_socket;
+
 # define PORT 80
 
 #include <errno.h>
 #include <stdio.h>
 
-SOCK			open_socket(void);
+t_socket		*open_socket(void);
+void			close_socket(t_socket *socket);
 
 SOCK_ERR		send_msg(SOCK socket, char *msg);
 SOCK_ERR		send_msg_input(SOCK socket, char **input);

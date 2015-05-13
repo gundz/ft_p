@@ -35,45 +35,43 @@ client
 }
 */
 
-SOCK
+t_socket *
 connect_client(const char *addr)
 {
-	SOCK			sock;
-	SOCKADDR_IN 	sin;
-	socklen_t		recsize = sizeof(sin);
+	t_socket		*sock;
 	SOCK_ERR		sock_err;
 
-	if ((sock = open_socket()) == -1)
+	if ((sock = open_socket()) == NULL)
 		return (sock);
 
 	/* Configuration de la connexion */
-	sin.sin_addr.s_addr = inet_addr(addr);
-	sin.sin_family = AF_INET;
-	sin.sin_port = htons(PORT);
+	sock->sin.sin_addr.s_addr = inet_addr(addr);
+	sock->sin.sin_family = AF_INET;
+	sock->sin.sin_port = htons(PORT);
 
-	sock_err = connect(sock, (SOCKADDR*)&sin, recsize);
+	sock_err = connect(sock->sock, (SOCKADDR*)&sock->sin, sock->size);
 	if (sock_err == -1)
 	{
 		perror("connect");
-		return (-1);
+		return (sock);
 	}
-	printf("Connexion à %s sur le port %d\n", inet_ntoa(sin.sin_addr), htons(sin.sin_port));
+	printf("Connexion à %s sur le port %d\n", inet_ntoa(sock->sin.sin_addr), htons(sock->sin.sin_port));
 	return (sock);
 }
 
 int
 main(void)
 {
-	SOCK	sock;
-	char	*input;
+	t_socket	*sock;
+	char		*input;
 
 	sock = connect_client("127.0.0.1");
-	if (sock == -1)
+	if (sock == NULL)
 		return (-1);
 	while (1)
 	{
 		input = NULL;
-		if (send_msg_input(sock, &input) != -1)
+		if (send_msg_input(sock->sock, &input) != -1)
 		{
 			if (ft_strcmp(input, "exit") == 0)
 			{
@@ -83,7 +81,7 @@ main(void)
 			free(input);
 		}
 	}
-	shutdown(sock, 2);
-	close(sock);
+	shutdown(sock->sock, 2);
+	close_socket(sock);
 	return (0);
 }
