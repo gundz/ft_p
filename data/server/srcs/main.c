@@ -15,7 +15,7 @@ typedef struct	s_file
 	char		*block;
 }				t_file;
 
-#define BUF_SIZE 32
+#define BUF_SIZE 4096
 #include <fcntl.h>
 
 SOCK_ERR
@@ -88,9 +88,9 @@ send_file(t_socket *sock, const char *path)
 	while ((n = read(fd, &buf, BUF_SIZE)))
 	{
 		buf[n] = '\0';
-		printf("%s", buf);
 		send_data(sock, buf, n);
 	}
+	printf("file sended !\n");
 	close(fd);
 }
 
@@ -105,7 +105,7 @@ talk(t_socket *csock, int *run, int *connected)
 
 		if (ft_strcmp("get", msg) == 0)
 		{
-			send_file(csock, "client");
+			send_file(csock, "/media/fgundlac/Donnée/Téléchargements/Torrent/Paprika.MULTi.1080p.HDLight.x264.AC3.SRT-JiM.mkv");
 		}
 
 		if (ft_strcmp("ls", msg) == 0)

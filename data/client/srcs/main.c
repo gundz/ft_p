@@ -39,39 +39,6 @@ typedef struct	s_file
 	char		*block;
 }				t_file;
 
-t_list *
-rec_file_data(t_socket *sock, t_file_data *file_data)
-{
-	char			buf[file_data->block_size + 1];
-	t_list			*file;
-	int				n;
-	unsigned int	i;
-	int				size;
-
-	file = NULL;
-	i = 0;
-	while (i < file_data->nb_block)
-	{
-		printf("%d%% | %d\n", (i * file_data->block_size) * 100 / file_data->size, i);
-		n = recv(sock->sock, &size, sizeof(int), 0);
-		if (n == -1)
-		{
-			perror("rec_file_data size");
-			return (NULL);
-		}
-		n = recv(sock->sock, &buf, size, 0);
-		if (n == -1)
-		{
-			perror("rec_file_data data");
-			return (NULL);
-		}
-		buf[n] = '\0';
-		lst_push_back(&file, ft_strdup(buf));
-		i++;
-	}
-	return (file);
-}
-
 int
 rec_data(t_socket *sock, char **data)
 {
@@ -104,16 +71,25 @@ rec_file(t_socket *sock)
 
 	recv(sock->sock, &file_data, sizeof(t_file_data), 0);
 	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
-	int			fd;
-	char		*buf;
-	int			size;
-	unsigned int			i;
-	fd = open("tmp.png", O_WRONLY | O_CREAT);
+	int				fd;
+	char			*buf;
+	int				size;
+	unsigned int	i;
+
+	int				tmp;
+	int				percent;
+	fd = open("Makefile", O_WRONLY | O_CREAT);
 
 	i = 0;
-	while (i != file_data.nb_block)
+	tmp = 0;
+	while (i < file_data.nb_block)
 	{
-		printf("%d%%\n", (i * file_data.block_size) * 100 / file_data.size);
+		percent = (i * file_data.block_size) * 100 / file_data.size;
+		if (percent != tmp)
+		{
+			tmp = percent;
+			printf("%d%% | %d | %d | %d\n", tmp, i, file_data.block_size, file_data.size);
+		}
 		size = rec_data(sock, &buf);
 		write(fd, buf, size);
 		free(buf);
@@ -136,7 +112,7 @@ main(void)
 		input = NULL;
 		if (send_msg_input(sock->sock, &input) != -1)
 		{
-			if (ft_strcmp(input, "get") == 0)
+			if (ft_strcmp("get", input) == 0)
 			{
 				rec_file(sock);
 			}
