@@ -49,7 +49,7 @@ get_file_data(const int fd, t_file_data *file_data)
 	file_data->size = size;
 	file_data->nb_block = nb_block;
 	file_data->block_size = BUF_SIZE;
-	lseek(fd, 0, SEEK_SET);
+	lseek(fd, -size, SEEK_CUR);
 }
 
 SOCK_ERR
@@ -84,12 +84,14 @@ send_file(t_socket *sock, const char *path)
 	get_file_data(fd, &file_data);
 	send_struct(sock, &file_data, sizeof(t_file_data));
 	printf("send file : %s\n", path);
+	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
 	while ((n = read(fd, &buf, BUF_SIZE)))
 	{
 		buf[n] = '\0';
 		printf("%s", buf);
 		send_data(sock, buf, n);
 	}
+	close(fd);
 }
 
 void
@@ -103,7 +105,7 @@ talk(t_socket *csock, int *run, int *connected)
 
 		if (ft_strcmp("get", msg) == 0)
 		{
-			send_file(csock, "ft_p.pdf");
+			send_file(csock, "client");
 		}
 
 		if (ft_strcmp("ls", msg) == 0)

@@ -72,6 +72,30 @@ rec_file_data(t_socket *sock, t_file_data *file_data)
 	return (file);
 }
 
+int
+rec_data(t_socket *sock, char **data)
+{
+	int		size;
+	int		n;
+
+	n = recv(sock->sock, &size, sizeof(int), 0);
+	if (n == -1)
+	{
+		perror("msg size");
+		return (-1);
+	}
+	if (!(*data = (char *)malloc(sizeof(char) * size)))
+		return (-1);
+	n = recv(sock->sock, *data, size, 0);
+	if (n == -1)
+	{
+		perror("msg");
+		free(*data);
+		return (-1);
+	}
+	return (size);
+}
+
 #include <fcntl.h>
 void
 rec_file(t_socket *sock)
@@ -82,15 +106,16 @@ rec_file(t_socket *sock)
 	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
 	int			fd;
 	char		*buf;
+	int			size;
 	unsigned int			i;
-	fd = open("tmp", O_WRONLY | O_CREAT);
+	fd = open("tmp.png", O_WRONLY | O_CREAT);
 
 	i = 0;
 	while (i != file_data.nb_block)
 	{
 		printf("%d%%\n", (i * file_data.block_size) * 100 / file_data.size);
-		buf = rec_msg(sock->sock);
-		write(fd, buf, ft_strlen(buf));
+		size = rec_data(sock, &buf);
+		write(fd, buf, size);
 		free(buf);
 		i++;
 	}
