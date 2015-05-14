@@ -52,7 +52,7 @@ rec_file_data(t_socket *sock, t_file_data *file_data)
 	i = 0;
 	while (i < file_data->nb_block)
 	{
-		printf("%d%%\n", (i * file_data->block_size) * 100 / file_data->size);
+		printf("%d%% | %d\n", (i * file_data->block_size) * 100 / file_data->size, i);
 		n = recv(sock->sock, &size, sizeof(int), 0);
 		if (n == -1)
 		{
@@ -72,33 +72,29 @@ rec_file_data(t_socket *sock, t_file_data *file_data)
 	return (file);
 }
 
-t_list *
+#include <fcntl.h>
+void
 rec_file(t_socket *sock)
 {
 	t_file_data		file_data;
-	t_list			*file;
-	int				n;
 
-	n = recv(sock->sock, &file_data, sizeof(t_file_data), 0);
-	if (n == -1)
-	{
-		perror("receive file_data");
-		return (NULL);
-	}
+	recv(sock->sock, &file_data, sizeof(t_file_data), 0);
 	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
-	file = rec_file_data(sock, &file_data);
+	int			fd;
+	char		*buf;
+	unsigned int			i;
+	fd = open("tmp", O_WRONLY | O_CREAT);
 
-	t_list			*lstwalker;
-	lstwalker = file;
-	while (lstwalker != NULL)
+	i = 0;
+	while (i != file_data.nb_block)
 	{
-		printf("%s", (char *)lstwalker->data);
-		if (lstwalker->next == NULL)
-			break ;
-		lstwalker = lstwalker->next;
+		printf("%d%%\n", (i * file_data.block_size) * 100 / file_data.size);
+		buf = rec_msg(sock->sock);
+		write(fd, buf, ft_strlen(buf));
+		free(buf);
+		i++;
 	}
-	lst_free(&file, 1);
-	return (file);
+	printf("100%%\n");
 }
 
 int

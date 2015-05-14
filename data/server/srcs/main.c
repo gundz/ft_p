@@ -18,63 +18,78 @@ typedef struct	s_file
 #define BUF_SIZE 32
 #include <fcntl.h>
 
-t_list *
-store_file(const char *path, t_file_data *file_data)
-{
-	int			fd;
-	char		buf[BUF_SIZE + 1];
-	t_list		*file;
-	int			n;
-	int			nb_block;
-
-	fd = open(path, O_RDONLY);
-	if (fd == -1)
-		perror("");
-	file = NULL;
-	nb_block = 0;
-	while ((n = read(fd, &buf, BUF_SIZE)))
-	{
-		buf[n] = '\0';
-		lst_push_back(&file, ft_strdup(buf));
-		nb_block++;
-	}
-	close(fd);
-	file_data->size = lst_csize(file);
-	file_data->block_size = BUF_SIZE;
-	file_data->nb_block = nb_block;
-	return (file);
-}
-
 SOCK_ERR
 send_struct(t_socket *sock, void *struc, int size)
 {
 	SOCK_ERR			sock_err;
-	char				*super = struc;
+	char				*tmp;
 
-	sock_err = send(sock->sock, &(*super), size, 0);
+	tmp = struc;
+	sock_err = send(sock->sock, &(*tmp), size, 0);
 	if (sock_err == -1)
 		perror("send struct");
 	return (sock_err);
 }
 
 void
+get_file_data(const int fd, t_file_data *file_data)
+{
+	char		buf[BUF_SIZE + 1];
+	int			n;
+	int			size;
+	int			nb_block;
+
+	size = 0;
+	nb_block = 0;
+	while ((n = read(fd, &buf, BUF_SIZE)))
+	{
+		size += n;
+		nb_block++;
+	}
+	file_data->size = size;
+	file_data->nb_block = nb_block;
+	file_data->block_size = BUF_SIZE;
+	lseek(fd, 0, SEEK_SET);
+}
+
+SOCK_ERR
+send_data(t_socket *sock, void *data, int size)
+{
+	SOCK_ERR	sock_err;
+	char		*tmp;
+
+	tmp = data;
+	sock_err = 0;
+	if (size > 0)
+	{
+		sock_err = send(sock->sock, &size, sizeof(int), 0);
+		if (sock_err == -1)
+			perror("send_data size");
+		sock_err = send(sock->sock, &(*tmp), size, 0);
+		if (sock_err == -1)
+			perror("send_data data");
+	}
+	return (sock_err);
+}
+
+void
 send_file(t_socket *sock, const char *path)
 {
-	t_list			*file;
+	int				fd;
 	t_file_data		file_data;
-	t_list			*lstwalker;
+	int				n;
+	char			buf[BUF_SIZE + 1];
 
-	file = store_file(path, &file_data);
+	fd = open(path, O_RDONLY);
+	get_file_data(fd, &file_data);
 	send_struct(sock, &file_data, sizeof(t_file_data));
-	lstwalker = file;
-	while (lstwalker != NULL)
+	printf("send file : %s\n", path);
+	while ((n = read(fd, &buf, BUF_SIZE)))
 	{
-		send_msg(sock->sock, (char *)lstwalker->data);
-		if (lstwalker->next == NULL)
-			break ;
-		lstwalker = lstwalker->next;
+		buf[n] = '\0';
+		printf("%s", buf);
+		send_data(sock, buf, n);
 	}
-	lst_free(&file, 1);
 }
 
 void
@@ -88,7 +103,7 @@ talk(t_socket *csock, int *run, int *connected)
 
 		if (ft_strcmp("get", msg) == 0)
 		{
-			send_file(csock, "Makefile");
+			send_file(csock, "ft_p.pdf");
 		}
 
 		if (ft_strcmp("ls", msg) == 0)
