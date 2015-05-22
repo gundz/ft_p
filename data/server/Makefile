@@ -14,7 +14,7 @@ CFLAGS =		-Wall -Werror -Wextra
 LIB_NAMES =		-lftsocket -lft
 LIB_PATH =		../libft/ ../libftsocket/
 
-#LIB_SUPP =		-lm
+LIB_SUPP =		-lm
 
 SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/

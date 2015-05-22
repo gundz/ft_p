@@ -18,6 +18,7 @@ send_struct(t_socket *sock, void *struc, int size)
 	return (sock_err);
 }
 #include <sys/stat.h>
+#include <math.h>
 void
 get_file_data(const int fd, char *filename, t_file_data *file_data)
 {
@@ -34,7 +35,7 @@ get_file_data(const int fd, char *filename, t_file_data *file_data)
 	}
 	file_data->filesize = (int)buf.st_size;
 	file_data->block_size = BUF_SIZE;
-	file_data->nb_block = buf.st_size / BUF_SIZE + buf.st_size % BUF_SIZE;
+	file_data->nb_block = (int)ceil(buf.st_size / BUF_SIZE);
 }
 
 SOCK_ERR
@@ -90,7 +91,7 @@ talk(t_socket *csock, int *run, int *connected)
 
 		if (ft_strcmp("get", msg) == 0)
 		{
-			send_file(csock, "test.avi");
+			send_file(csock, "test.mp3");
 		}
 
 		if (ft_strcmp("ls", msg) == 0)

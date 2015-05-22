@@ -64,26 +64,26 @@ rec_file(t_socket *sock)
 	int				size;
 	unsigned int	i;
 
-	int				tmp;
-	int				percent;
-	fd = open("get.avi", O_WRONLY | O_CREAT);
+	double			tmp;
+	double			percent;
+	fd = open("get.mp3", O_WRONLY | O_CREAT);
 
 	i = 0;
 	tmp = 0;
 	while (i < file_data.nb_block)
 	{
-		percent = (i * file_data.block_size) * 100 / file_data.filesize;
+		percent = i * 100 / file_data.nb_block;
 		if (percent != tmp)
 		{
 			tmp = percent;
-			printf("%d%%\n", tmp);
+			printf("%f%% | block = %d |nb_block = %d\n", tmp, i, file_data.nb_block);
 		}
 		size = rec_data(sock, &buf);
 		write(fd, buf, size);
 		free(buf);
 		i++;
 	}
-	printf("100%%\n");
+	printf("100%% | block = %d\n", i);
 }
 
 int
