@@ -31,6 +31,20 @@ typedef struct		s_socket
 #include <errno.h>
 #include <stdio.h>
 
+typedef struct s_file_data
+{
+	char		filename[255];
+	uint32_t	filesize;
+	uint32_t	block_size;
+	uint32_t	nb_block;
+}				t_file_data;
+
+typedef struct	s_file_block
+{
+	uint32_t	block_id;
+	char		*block;
+}				t_file_block;
+
 t_socket		*open_socket(void);
 void			close_socket(t_socket *socket);
 

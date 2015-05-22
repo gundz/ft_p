@@ -26,19 +26,6 @@ connect_client(const char *addr)
 	return (sock);
 }
 
-typedef struct s_file_data
-{
-	uint32_t	size;
-	uint32_t	block_size;
-	uint32_t	nb_block;
-}				t_file_data;
-
-typedef struct	s_file
-{
-	uint32_t	block_id;
-	char		*block;
-}				t_file;
-
 int
 rec_data(t_socket *sock, char **data)
 {
@@ -70,7 +57,8 @@ rec_file(t_socket *sock)
 	t_file_data		file_data;
 
 	recv(sock->sock, &file_data, sizeof(t_file_data), 0);
-	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
+	printf("filename : %s\n", file_data.filename);
+	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.filesize, file_data.block_size, file_data.nb_block);
 	int				fd;
 	char			*buf;
 	int				size;
@@ -78,17 +66,17 @@ rec_file(t_socket *sock)
 
 	int				tmp;
 	int				percent;
-	fd = open("Makefile", O_WRONLY | O_CREAT);
+	fd = open("get.avi", O_WRONLY | O_CREAT);
 
 	i = 0;
 	tmp = 0;
 	while (i < file_data.nb_block)
 	{
-		percent = (i * file_data.block_size) * 100 / file_data.size;
+		percent = (i * file_data.block_size) * 100 / file_data.filesize;
 		if (percent != tmp)
 		{
 			tmp = percent;
-			printf("%d%% | %d | %d | %d\n", tmp, i, file_data.block_size, file_data.size);
+			printf("%d%%\n", tmp);
 		}
 		size = rec_data(sock, &buf);
 		write(fd, buf, size);

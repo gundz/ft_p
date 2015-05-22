@@ -2,19 +2,6 @@
 #include <libft.h>
 #include <server.h>
 
-typedef struct s_file_data
-{
-	uint32_t	size;
-	uint32_t	block_size;
-	uint32_t	nb_block;
-}				t_file_data;
-
-typedef struct	s_file
-{
-	uint32_t	block_id;
-	char		*block;
-}				t_file;
-
 #define BUF_SIZE 4096
 #include <fcntl.h>
 
@@ -30,26 +17,24 @@ send_struct(t_socket *sock, void *struc, int size)
 		perror("send struct");
 	return (sock_err);
 }
-
+#include <sys/stat.h>
 void
-get_file_data(const int fd, t_file_data *file_data)
+get_file_data(const int fd, char *filename, t_file_data *file_data)
 {
-	char		buf[BUF_SIZE + 1];
-	int			n;
-	int			size;
-	int			nb_block;
+	struct stat		buf;
+	int				i;
 
-	size = 0;
-	nb_block = 0;
-	while ((n = read(fd, &buf, BUF_SIZE)))
+	fstat(fd, &buf);
+	//check fstat output
+	i = 0;
+	while (filename[i] != '\0')
 	{
-		size += n;
-		nb_block++;
+		file_data->filename[i] = filename[i];
+		i++;
 	}
-	file_data->size = size;
-	file_data->nb_block = nb_block;
+	file_data->filesize = (int)buf.st_size;
 	file_data->block_size = BUF_SIZE;
-	lseek(fd, -size, SEEK_CUR);
+	file_data->nb_block = buf.st_size / BUF_SIZE + buf.st_size % BUF_SIZE;
 }
 
 SOCK_ERR
@@ -73,7 +58,7 @@ send_data(t_socket *sock, void *data, int size)
 }
 
 void
-send_file(t_socket *sock, const char *path)
+send_file(t_socket *sock, char *path)
 {
 	int				fd;
 	t_file_data		file_data;
@@ -81,10 +66,10 @@ send_file(t_socket *sock, const char *path)
 	char			buf[BUF_SIZE + 1];
 
 	fd = open(path, O_RDONLY);
-	get_file_data(fd, &file_data);
+	get_file_data(fd, path, &file_data);
 	send_struct(sock, &file_data, sizeof(t_file_data));
 	printf("send file : %s\n", path);
-	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.size, file_data.block_size, file_data.nb_block);
+	printf("size = %d | block_size = %d | nb_block = %d\n", file_data.filesize, file_data.block_size, file_data.nb_block);
 	while ((n = read(fd, &buf, BUF_SIZE)))
 	{
 		buf[n] = '\0';
@@ -105,7 +90,7 @@ talk(t_socket *csock, int *run, int *connected)
 
 		if (ft_strcmp("get", msg) == 0)
 		{
-			send_file(csock, "/media/fgundlac/Donnée/Téléchargements/Torrent/Paprika.MULTi.1080p.HDLight.x264.AC3.SRT-JiM.mkv");
+			send_file(csock, "test.avi");
 		}
 
 		if (ft_strcmp("ls", msg) == 0)
