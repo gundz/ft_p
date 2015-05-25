@@ -27,6 +27,22 @@ list_dir(const char *path)
 }
 
 void
+show_ls(t_list *lst)
+{
+	t_list		*lstwalker;
+
+	lstwalker = lst;
+	while (lstwalker != NULL)
+	{
+		printf("%s\n", (char *)lstwalker->data); 
+		if (lstwalker->next == NULL)
+			break ;
+		lstwalker = lstwalker->next;
+	}
+	lst_free(&lst, 1);
+}
+
+void
 send_ls(t_socket *sock, const char *dir)
 {
 	t_list			*files;
@@ -58,7 +74,6 @@ receive_ls(t_socket *socket)
 	uint32_t		size;
 	t_list			*files;
 	int				n;
-	t_list			*lstwalker;
 
 	n = recv(socket->sock, &size, sizeof(uint32_t), 0);
 	if (n == -1)
@@ -69,13 +84,5 @@ receive_ls(t_socket *socket)
 	files = NULL;
 	while (size--)
 		lst_push_back(&files, rec_msg(socket->sock));
-	lstwalker = files;
-	while (lstwalker != NULL)
-	{
-		printf("%s\n", (char *)lstwalker->data);
-		if (lstwalker->next == NULL)
-			break ;
-		lstwalker = lstwalker->next;
-	}
-	lst_free(&files, 1);
+	show_ls(files);
 }

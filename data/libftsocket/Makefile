@@ -6,7 +6,10 @@ NAME =			libftsocket.a
 SRCS =			\
 				io_socket.c \
 				msg.c \
+				struct.c \
 				ls.c \
+				send_get_file.c \
+				data.c \
 
 CC =			gcc
 
@@ -15,7 +18,7 @@ CFLAGS =		-Wall -Werror -Wextra
 LIB_NAMES =		-lft
 LIB_PATH =		../libft/
 
-#LIB_SUPP =		-lm
+LIB_SUPP =		-lm
 
 SRC_PATH = 		./srcs/
 INC_PATH = 		./includes/
@@ -26,7 +29,7 @@ SRC = $(addprefix $(SRC_PATH), $(SRCS))
 OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
 LIB = $(addprefix -I, $(addsuffix includes, $(LIB_PATH))) $(addprefix -L, $(LIB_PATH))
 INC = $(addprefix -I, $(INC_PATH))
-LDFLAGS = $(LIB) $(LIB_NAMES)
+LDFLAGS = $(LIB) $(LIB_NAMES) $(LIB_SUPP)
 EMPTY =
 
 all: libs name $(OBJ) done $(NAME)
@@ -43,14 +46,14 @@ ifeq ($(TYPE), LIB)
 	@ ar -rc $(NAME) $(OBJ)
 	@ ranlib $(NAME)
 else
-	@ $(CC) $(OBJ) $(LDFLAGS) $(LIB_SUPP) -o $(NAME)
+	@ $(CC) $(OBJ) $(LDFLAGS) -o $(NAME)
 endif
 	@ echo "\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.c
 	@ echo -n "\033[37;7m+\033[0m"
 	@ mkdir -p $(OBJ_PATH) 2> /dev/null
-	@ $(CC) $(CFLAGS) $(LIB) $(INC) -c $< -o $@
+	@ $(CC) $(CFLAGS) $(LIB) $(LIB_SUPP) $(INC) -c $< -o $@
 
 ifeq ($(LIB_PATH), $(EMPTY))
 else
