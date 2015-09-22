@@ -1,92 +1,34 @@
-NAME =			a.out
+LIBFT_SRCS = ./libft_srcs/
+LIBFTSOCKET_SRCS = ./libftsocket_srcs/
+SERVER_SRCS = ./server_srcs/
+CLIENT_SRCS = ./client_srcs/
 
-SRCS =			\
-			main.c \
+all: libft libftsocket server client
 
-#TYPE: LIB or PROGRAM
-TYPE =			PROGAM
+libft:
+	@ make -sC $(LIBFT_SRCS)
 
-#OS: LINUX/OSX or WINDOWS
-OS =			LINUX
+libftsocket:
+	@ make -sC $(LIBFTSOCKET_SRCS)
 
-UNIX_CC =		gcc
-WIN_CC =		i686-w64-mingw32-gcc
+server:
+	@ make -sC $(SERVER_SRCS)
 
-EXTENTION =		c
-
-CFLAGS =		-Wall -Werror -Wextra
-
-#LIB_NAMES =		-lfoo -lbar
-#LIB_PATH =		./libfoo/ ./libbar/
-
-#LIB_SUPP =		-lm
-#LIB_SUPP_INC =		-I ./foo/inc/
-
-SRC_PATH = 		./srcs/
-INC_PATH = 		./includes/
-OBJ_PATH =		./obj/
-
-CC =			$(UNIX_CC)
-OBJ_NAME = $(SRCS:.$(EXTENTION)=.o)
-SRC = $(addprefix $(SRC_PATH), $(SRCS))
-OBJ = $(addprefix $(OBJ_PATH), $(OBJ_NAME))
-LIB = $(addprefix -I, $(addsuffix includes, $(LIB_PATH))) $(addprefix -L, $(LIB_PATH))
-INC = $(addprefix -I, $(INC_PATH))
-INC += $(LIB_SUPP_INC)
-LDFLAGS = $(LIB) $(LIB_NAMES)
-EMPTY =
-
-ifeq ($(OS), WINDOWS)
-NAME := $(NAME).exe
-CC = $(WIN_CC)
-else
-endif
-
-all: libs name $(OBJ) done $(NAME)
-
-name :
-	@ echo "\033[4;7mCompiling Objects:\033[0m "
-
-done :
-	@ echo "\n\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
-
-$(NAME): $(OBJ)
-	@ echo "\033[4;7mCompiling:\033[0m [$(NAME)]"
-ifeq ($(TYPE), LIB)
-	@ ar -rc $(NAME) $(OBJ)
-	@ ranlib $(NAME)
-else
-	@ $(CC) $(OBJ) $(LDFLAGS) $(LIB_SUPP) -o $(NAME)
-endif
-	@ echo "\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
-
-$(OBJ_PATH)%.o: $(SRC_PATH)%.$(EXTENTION)
-	@ echo -n "\033[37;7m+\033[0m"
-	@ mkdir -p $(OBJ_PATH) 2> /dev/null
-	@ $(CC) $(CFLAGS) $(LIB) $(INC) -c $< -o $@
-
-ifeq ($(LIB_PATH), $(EMPTY))
-else
-libs:
-	@ $(foreach lib, $(LIB_PATH), make -C $(lib);)
-endif
+client:
+	@ make -sC $(CLIENT_SRCS)
 
 clean:
-	@ rm -rf $(OBJ_PATH)
-	@ echo "\033[4;7mCleaning:\033[0m [$(NAME)]\n\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
-ifeq ($(LIB_PATH), $(EMPTY))
-else
-	@ $(foreach lib, $(LIB_PATH), make clean -C $(lib);)
-endif
+	@ make clean -sC $(LIBFT_SRCS)
+	@ make clean -sC $(LIBFTSOCKET_SRCS)
+	@ make clean -sC $(SERVER_SRCS)
+	@ make clean -sC $(CLIENT_SRCS)
 
-fclean: clean
-	@ rm -f $(NAME)
-	@ echo "\033[4;7mFcleaning:\033[0m [$(NAME)]\033[0m\n\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
-ifeq ($(LIB_PATH), $(EMPTY))
-else
-	@ $(foreach lib, $(LIB_PATH), make fclean -C $(lib);)
-endif
+fclean:
+	@ make fclean -sC $(LIBFT_SRCS)
+	@ make fclean -sC $(LIBFTSOCKET_SRCS)
+	@ make fclean -sC $(SERVER_SRCS)
+	@ make fclean -sC $(CLIENT_SRCS)
 
 re: fclean all
 
-.PHONY: all clean fclean re libs
+.PHONY: clean fclean re libft server client

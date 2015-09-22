@@ -1,5 +1,4 @@
-
-#include <socket.h>
+#include <libftsocket.h>
 
 int
 main(void)
@@ -9,6 +8,10 @@ main(void)
 	t_socket			cli;
 
 	if (new_socket(&serv, AF_INET, INADDR_ANY, htons(portno)) == -1)
+		return (EXIT_FAILURE);
+
+	int yes = 1;
+	if(setsockopt(serv.fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) 
 		return (EXIT_FAILURE);
 
 	if (bind(serv.fd, (struct sockaddr *)&serv.addr, serv.socklen) == -1)

@@ -1,6 +1,4 @@
-#include <string.h>
-
-#include <socket.h>
+#include <libftsocket.h>
 
 int
 main(void)

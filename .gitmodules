@@ -4,3 +4,6 @@
 [submodule "data/libft"]
 	path = data/libft
 	url = https://github.com/gundz/libft.git
+[submodule "libft_srcs"]
+	path = libft_srcs
+	url = https://github.com/gundz/libft.git
