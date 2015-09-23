@@ -5,6 +5,8 @@ SRCS =			\
 				uint32.c \
 				msg_type.c \
 				msg.c \
+				file.c \
+				data.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			LIB

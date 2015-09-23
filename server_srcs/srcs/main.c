@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libft.h>
 #include <libftsocket.h>
 #include <server.h>
@@ -14,7 +17,11 @@ int						get_client(t_socket *serv)
 		return (-1);
 	}
 	printf("%s: connected\n", inet_ntoa(cli.addr.sin_addr));
-	printf("%s\n", get_msg(cli.fd));
+
+
+	get_file(cli.fd);
+
+
 	close(cli.fd);
 	printf("%s: disconnected\n", inet_ntoa(cli.addr.sin_addr));
 	return (0);

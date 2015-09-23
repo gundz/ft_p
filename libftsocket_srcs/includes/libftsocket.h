@@ -7,10 +7,9 @@
 
 # include <unistd.h>
 
-# include <stdio.h>
-# include <errno.h>
-
 # include <stdlib.h>
+
+# define DATA_BUF_SIZE 4096
 
 typedef int SOCKET;
 
@@ -37,5 +36,11 @@ int						get_uint32(const int fd);
 
 int						send_msg(const int fd, char *msg);
 char					*get_msg(const int fd);
+
+int						send_file(const int sockfd, char *path);
+int						get_file(const int fd);
+
+int						send_data(const int fd, void *data, size_t size);
+int						get_data(const int fd, void **data);
 
 #endif

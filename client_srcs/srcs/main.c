@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libft.h>
 #include <libftsocket.h>
 #include <client.h>
@@ -8,9 +11,11 @@ int						main_client(char *addr, const int portno)
 
 	if (init_client(addr, portno, &serv) == -1)
 		return (EXIT_FAILURE);
+	printf("%s: connected\n", inet_ntoa(serv.addr.sin_addr));
 
-	send_msg(serv.fd, "test");
+	send_file(serv.fd, "/mnt/FCB83109B830C3C4/tmp/test.7z");
 
+	printf("%s: disconnected\n", inet_ntoa(serv.addr.sin_addr));
 	close(serv.fd);
 	return (EXIT_SUCCESS);
 }

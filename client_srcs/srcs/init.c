@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libftsocket.h>
 
 int					init_client(char *addr, const int portno, t_socket *serv)

@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libft.h>
 #include <libftsocket.h>
 

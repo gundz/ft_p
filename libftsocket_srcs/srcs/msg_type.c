@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libftsocket.h>
 
 int					send_msg_type(const int fd, const t_msg_type type)

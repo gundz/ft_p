@@ -1,3 +1,6 @@
+#include <errno.h>
+#include <stdio.h>
+
 #include <libftsocket.h>
 
 SOCKET				open_socket(void)
