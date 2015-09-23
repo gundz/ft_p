@@ -6,7 +6,9 @@ SRCS =			\
 				msg_type.c \
 				msg.c \
 				file.c \
+				file_io.c \
 				data.c \
+				show.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			LIB

@@ -7,7 +7,7 @@
 
 #include <libftsocket.h>
 
-int						send_data(const int fd, void *data, size_t size)
+int						send_data(const int fd, void *data, int size)
 {
 	if (send_uint32(fd, size) == -1)
 		return (-1);

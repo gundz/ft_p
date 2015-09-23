@@ -19,7 +19,7 @@ int						get_client(t_socket *serv)
 	printf("%s: connected\n", inet_ntoa(cli.addr.sin_addr));
 
 
-	get_file(cli.fd);
+	get_file(cli.fd, &show_percent);
 
 
 	close(cli.fd);

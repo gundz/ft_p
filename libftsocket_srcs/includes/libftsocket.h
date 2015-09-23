@@ -37,10 +37,15 @@ int						get_uint32(const int fd);
 int						send_msg(const int fd, char *msg);
 char					*get_msg(const int fd);
 
-int						send_file(const int sockfd, char *path);
-int						get_file(const int fd);
-
-int						send_data(const int fd, void *data, size_t size);
+int						send_data(const int fd, void *data, int size);
 int						get_data(const int fd, void **data);
+
+int						send_file(const int sockfd, char *path);
+int						get_file(const int sockfd, void (*f)(long int, long int));
+
+int						open_file_read(char *path);
+int						open_file_write(char *path);
+
+void					show_percent(const long int i, const long int size);
 
 #endif
