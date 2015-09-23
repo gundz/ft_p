@@ -1,17 +1,15 @@
 #include <libft.h>
 #include <libftsocket.h>
+#include <client.h>
 
 int						main_client(char *addr, const int portno)
 {
 	t_socket			serv;
 
-	if (new_socket(&serv, AF_INET, inet_addr(addr), htons(portno)) == -1)
+	if (init_client(addr, portno, &serv) == -1)
 		return (EXIT_FAILURE);
 
-	if (connect(serv.fd, (struct sockaddr *)&serv.addr, serv.socklen) < 0)
-		perror("Error connecting 1");
-
-	send_msg_type(serv.fd, MSG);
+	send_msg(serv.fd, "test");
 
 	close(serv.fd);
 	return (EXIT_SUCCESS);

@@ -2,6 +2,7 @@ NAME =			../server
 
 SRCS =			\
 				main.c \
+				init.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			PROGAM
@@ -14,10 +15,10 @@ WIN_CC =		i686-w64-mingw32-gcc
 
 EXTENTION =		c
 
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra -g
 
-LIB_NAMES =		-lft -lftsocket
-LIB_PATH =		../libft_srcs/ ../libftsocket_srcs/
+LIB_NAMES =		-lftsocket -lft
+LIB_PATH =		../libftsocket_srcs/ ../libft_srcs/
 
 #LIB_SUPP =		-lm
 #LIB_SUPP_INC =	-I ./foo/inc/

@@ -1,41 +1,34 @@
 #include <libft.h>
 #include <libftsocket.h>
+#include <server.h>
+
+int						get_client(t_socket *serv)
+{
+	t_socket			cli;
+
+	cli.socklen = sizeof(cli.addr);
+	cli.fd = accept(serv->fd, (struct sockaddr *)&cli.addr, &(cli.socklen));
+	if (cli.fd < 0)
+	{
+		perror("ERROR on accept");
+		return (-1);
+	}
+	printf("%s: connected\n", inet_ntoa(cli.addr.sin_addr));
+	printf("%s\n", get_msg(cli.fd));
+	close(cli.fd);
+	printf("%s: disconnected\n", inet_ntoa(cli.addr.sin_addr));
+	return (0);
+}
 
 int						main_server(const int portno)
 {
 	t_socket			serv;
-	t_socket			cli;
 
-	if (new_socket(&serv, AF_INET, INADDR_ANY, htons(portno)) == -1)
+	if (init_server(portno, &serv) == -1)
 		return (EXIT_FAILURE);
 
-	int yes = 1;
-	if(setsockopt(serv.fd, SOL_SOCKET, SO_REUSEADDR, &yes, sizeof(int)) == -1) 
+	if (get_client(&serv) == -1)
 		return (EXIT_FAILURE);
-
-	if (bind(serv.fd, (struct sockaddr *)&serv.addr, serv.socklen) == -1)
-		perror("Error on binding");
-
-	listen(serv.fd, 5);
-
-	cli.socklen = sizeof(cli.addr);
-	cli.fd = accept(serv.fd, (struct sockaddr *)&cli.addr, &(cli.socklen));
-	if (cli.fd < 0)
-		perror("ERROR on accept");
-
-	printf("%s: connected\n", inet_ntoa(cli.addr.sin_addr));
-
-	t_msg_type				type;
-
-	type = get_msg_type(cli.fd);
-	if (type == MSG)
-		printf("MSG\n");
-	else
-		printf("None\n");
-
-	close(cli.fd);
-
-	printf("%s: disconnected\n", inet_ntoa(cli.addr.sin_addr));
 
 	close(serv.fd);
 	return (EXIT_SUCCESS);	

@@ -2,7 +2,9 @@ NAME =			libftsocket.a
 
 SRCS =			\
 				io_socket.c \
+				uint32.c \
 				msg_type.c \
+				msg.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			LIB
@@ -15,10 +17,10 @@ WIN_CC =		i686-w64-mingw32-gcc
 
 EXTENTION =		c
 
-CFLAGS =		-Wall -Werror -Wextra
+CFLAGS =		-Wall -Werror -Wextra -g
 
-#LIB_NAMES =		-lfoo -lbar
-#LIB_PATH =		./libfoo/ ./libbar/
+LIB_NAMES =		-lft
+LIB_PATH =		../libft_srcs/
 
 #LIB_SUPP =		-lm
 #LIB_SUPP_INC =		-I ./foo/inc/
@@ -90,4 +92,4 @@ endif
 
 re: fclean all
 
-.PHONY: all clean fclean re libs
+.PHONY: name clean fclean libs

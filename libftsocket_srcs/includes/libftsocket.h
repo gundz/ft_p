@@ -32,4 +32,10 @@ int						new_socket(t_socket *socket, const short sin_family, const in_addr_t si
 int						send_msg_type(const int fd, const t_msg_type type);
 t_msg_type				get_msg_type(const int fd);
 
+int						send_uint32(const int fd, const uint32_t var);
+int						get_uint32(const int fd);
+
+int						send_msg(const int fd, char *msg);
+char					*get_msg(const int fd);
+
 #endif

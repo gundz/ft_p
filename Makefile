@@ -3,7 +3,7 @@ LIBFTSOCKET_SRCS = ./libftsocket_srcs/
 SERVER_SRCS = ./server_srcs/
 CLIENT_SRCS = ./client_srcs/
 
-all: libft libftsocket server client
+all: re libft libftsocket server client
 
 libft:
 	@ make -sC $(LIBFT_SRCS)
@@ -31,4 +31,4 @@ fclean:
 
 re: fclean all
 
-.PHONY: clean fclean re libft server client
+.PHONY: libft libftsocket server client
