@@ -9,7 +9,7 @@
 
 int						send_data(const int fd, void *data, int size)
 {
-	if (send_uint32(fd, size) == -1)
+	if (send_int32(fd, size) == -1)
 		return (-1);
 	if (send(fd, data, size, 0) == -1)
 	{
@@ -24,7 +24,7 @@ int						get_data(const int fd, void **data)
 	int					size;
 	int					i;
 
-	size = get_uint32(fd);
+	size = get_int32(fd);
 	if (!(*data = malloc(size)))
 		return (-1);
 	i = 0;

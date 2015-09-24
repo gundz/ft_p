@@ -9,7 +9,7 @@ int					send_char_string(const int fd, char *msg)
 	int				len;
 
 	len = ft_strlen(msg);
-	if (send_uint32(fd, len) == -1)
+	if (send_int32(fd, len) == -1)
 		return (-1);
 	if (send(fd, &(*msg), sizeof(char) * len, 0) != len)
 	{
@@ -21,11 +21,11 @@ int					send_char_string(const int fd, char *msg)
 
 char				*get_char_string(const int fd)
 {
-	uint32_t		len;
+	int32_t		len;
 	char			*msg;
-	uint32_t		n;
+	int32_t		n;
 
-	len = get_uint32(fd);
+	len = get_int32(fd);
 	if (!(msg = (char *)malloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	n = 0;

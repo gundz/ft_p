@@ -5,6 +5,23 @@
 #include <libftsocket.h>
 #include <server.h>
 
+void					server_commands(t_socket *cli)
+{
+	char				*command;
+
+	while (1)
+	{
+		command = get_char_string(cli->fd);
+		if (ft_strcmp(command, "quit") == 0)
+		{
+			send_int32(cli->fd, MSG_CO_DISCO);
+			break ;
+		}
+		else
+			send_int32(cli->fd, MSG_COMMAND_ERROR);
+	}
+}
+
 int						get_client(t_socket *serv)
 {
 	t_socket			cli;
@@ -16,14 +33,9 @@ int						get_client(t_socket *serv)
 		perror("ERROR on accept");
 		return (-1);
 	}
-	printf("%s: connected\n", inet_ntoa(cli.addr.sin_addr));
-
-
-	get_file(cli.fd, &show_percent);
-
-
+	send_int32(cli.fd, MSG_CO_CONFIRM);
+	server_commands(&cli);
 	close(cli.fd);
-	printf("%s: disconnected\n", inet_ntoa(cli.addr.sin_addr));
 	return (0);
 }
 
