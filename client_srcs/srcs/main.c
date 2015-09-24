@@ -19,6 +19,10 @@ void					client_commands(t_socket *serv)
 		msg = get_int32(serv->fd);
 		if (msg == MSG_CO_DISCO)
 			break ;
+		if (msg == MSG_FILE_GET_CONFIRM)
+		{
+			get_file(serv->fd, &show_percent);
+		}
 		else
 			show_msg(msg, NULL);
 	}

@@ -17,6 +17,11 @@ void					server_commands(t_socket *cli)
 			send_int32(cli->fd, MSG_CO_DISCO);
 			break ;
 		}
+		if (ft_strcmp(command, "get") == 0)
+		{
+			send_int32(cli->fd, MSG_FILE_GET_CONFIRM);
+			send_file(cli->fd, "/mnt/FCB83109B830C3C4/tmp/test.mp3");
+		}
 		else
 			send_int32(cli->fd, MSG_COMMAND_ERROR);
 	}

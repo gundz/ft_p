@@ -57,6 +57,8 @@ int						write_file(const int fd, const int sockfd, void (*f)(long int, long int
 		i += j;
 		f(i, buf_stat->st_size);
 	}
+	f(i, buf_stat->st_size);
+	printf("\n");
 	free(buf_stat);
 	return (0);
 }
@@ -68,6 +70,7 @@ int						get_file(const int sockfd, void (*f)(long int, long int))
 
 	if ((path = ft_basename(get_char_string(sockfd))) == NULL)
 		return (-1);
+	printf("\tfile: %s\n", path);
 	if ((fd = open_file_write(path)) == -1)
 		return (-1);
 	write_file(fd, sockfd, f);
