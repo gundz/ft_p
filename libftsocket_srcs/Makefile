@@ -4,7 +4,7 @@ SRCS =			\
 				io_socket.c \
 				uint32.c \
 				msg_type.c \
-				msg.c \
+				char_string.c \
 				file.c \
 				file_io.c \
 				data.c \

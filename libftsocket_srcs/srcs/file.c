@@ -25,7 +25,7 @@ int						send_file(const int sockfd, char *path)
 
 	if ((fd = open_file_read(path)) == -1)
 		return (-1);
-	if (send_msg(sockfd, path) == -1)
+	if (send_char_string(sockfd, path) == -1)
 		return (-1);
 	if (get_file_stats(fd, &buf_stat) == -1)
 		return (-1);
@@ -66,7 +66,7 @@ int						get_file(const int sockfd, void (*f)(long int, long int))
 	int					fd;
 	char				*path;
 
-	if ((path = ft_basename(get_msg(sockfd))) == NULL)
+	if ((path = ft_basename(get_char_string(sockfd))) == NULL)
 		return (-1);
 	if ((fd = open_file_write(path)) == -1)
 		return (-1);

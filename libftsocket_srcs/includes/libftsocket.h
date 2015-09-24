@@ -34,8 +34,8 @@ t_msg_type				get_msg_type(const int fd);
 int						send_uint32(const int fd, const uint32_t var);
 int						get_uint32(const int fd);
 
-int						send_msg(const int fd, char *msg);
-char					*get_msg(const int fd);
+int						send_char_string(const int fd, char *msg);
+char					*get_char_string(const int fd);
 
 int						send_data(const int fd, void *data, int size);
 int						get_data(const int fd, void **data);

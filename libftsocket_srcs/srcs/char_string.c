@@ -4,7 +4,7 @@
 #include <libft.h>
 #include <libftsocket.h>
 
-int					send_msg(const int fd, char *msg)
+int					send_char_string(const int fd, char *msg)
 {
 	int				len;
 
@@ -13,13 +13,13 @@ int					send_msg(const int fd, char *msg)
 		return (-1);
 	if (send(fd, &(*msg), sizeof(char) * len, 0) != len)
 	{
-		perror("Error while sending msg");
+		perror("Error while sending char string");
 		return (-1);
 	}
 	return (0);
 }
 
-char				*get_msg(const int fd)
+char				*get_char_string(const int fd)
 {
 	uint32_t		len;
 	char			*msg;
