@@ -13,7 +13,7 @@ int						main_client(char *addr, const int portno)
 		return (EXIT_FAILURE);
 	printf("%s: connected\n", inet_ntoa(serv.addr.sin_addr));
 
-	send_file(serv.fd, "/mnt/FCB83109B830C3C4/tmp/test.exe");
+	send_file(serv.fd, "/mnt/FCB83109B830C3C4/tmp/test.mp3");
 
 	printf("%s: disconnected\n", inet_ntoa(serv.addr.sin_addr));
 	close(serv.fd);

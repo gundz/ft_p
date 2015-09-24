@@ -25,6 +25,8 @@ int						send_file(const int sockfd, char *path)
 
 	if ((fd = open_file_read(path)) == -1)
 		return (-1);
+	if (send_msg(sockfd, path) == -1)
+		return (-1);
 	if (get_file_stats(fd, &buf_stat) == -1)
 		return (-1);
 	if (send_data(sockfd, &buf_stat, sizeof(buf)))
@@ -62,8 +64,11 @@ int						write_file(const int fd, const int sockfd, void (*f)(long int, long int
 int						get_file(const int sockfd, void (*f)(long int, long int))
 {
 	int					fd;
+	char				*path;
 
-	if ((fd = open_file_write("/mnt/FCB83109B830C3C4/tmp/copy")) == -1)
+	if ((path = ft_basename(get_msg(sockfd))) == NULL)
+		return (-1);
+	if ((fd = open_file_write(path)) == -1)
 		return (-1);
 	write_file(fd, sockfd, f);
 	close(fd);
