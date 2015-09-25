@@ -25,3 +25,16 @@ int					new_socket(t_socket *socket, const short sin_family, const in_addr_t sin
 	socket->socklen = sizeof(socket->addr);
 	return (0);
 }
+
+int						get_client(t_socket *serv, t_socket *cli)
+{
+	cli->socklen = sizeof(cli->addr);
+	cli->fd = accept(serv->fd, (struct sockaddr *)&cli->addr, &(cli->socklen));
+	if (cli->fd < 0)
+	{
+		perror("ERROR on accept");
+		return (-1);
+	}
+	send_int32(cli->fd, MSG_CO_CONFIRM);
+	return (0);
+}

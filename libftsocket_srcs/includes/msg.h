@@ -10,5 +10,6 @@
 #define MSG_FILE_GET_CONFIRM 7
 #define MSG_FILE_SEND 8
 #define MSG_FILE_SEND_CONFIRM 9
+#define MSG_FILE_SEND_NOT_EXISTS 10
 
 #endif

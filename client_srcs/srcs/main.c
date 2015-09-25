@@ -5,52 +5,57 @@
 #include <libftsocket.h>
 #include <client.h>
 
-void					client_commands(t_socket *serv)
+void					client_commands(t_socket *serv, t_command *commands)
 {
-	char				*command;
+	char				*cinput;
+	int					command_id;
 	int					msg;
+	int					run;
 
-	while (1)
+	run = 1;
+	while (run == 1)
 	{
 		ft_putstr(inet_ntoa(serv->addr.sin_addr));
 		ft_putstr(" $>: ");
-		get_next_line(0, &command);
-		send_char_string(serv->fd, command);
+		get_next_line(0, &cinput);
+		send_char_string(serv->fd, cinput);
 		msg = get_int32(serv->fd);
-		if (msg == MSG_CO_DISCO)
-			break ;
-		if (msg == MSG_FILE_GET_CONFIRM)
-		{
-			get_file(serv->fd, &show_percent);
-		}
-		else
+		command_id = command_get_function_id(commands, cinput, NB_COMMANDS);
+		if (ft_strcmp(cinput, "quit") == 0)
+			run = 0;
+		else if (command_id == -1)
 			show_msg(msg, NULL);
+		else
+			commands[command_id].f(serv->fd, cinput);
+		free(cinput);
 	}
 }
 
-int						main_client(char *addr, const int portno)
+int						main_client(t_data *data)
 {
-	t_socket			serv;
 	int					msg;
 
-	if (init_client(addr, portno, &serv) == -1)
-		return (EXIT_FAILURE);
-
-	show_msg(MSG_CO_WAIT, inet_ntoa(serv.addr.sin_addr));
-	msg = get_int32(serv.fd);
-	show_msg(msg, inet_ntoa(serv.addr.sin_addr));
-	client_commands(&serv);
-	close(serv.fd);
-	show_msg(MSG_CO_DISCO, inet_ntoa(serv.addr.sin_addr));
+	show_msg(MSG_CO_WAIT, inet_ntoa(data->serv.addr.sin_addr));
+	msg = get_int32(data->serv.fd);
+	show_msg(msg, inet_ntoa(data->serv.addr.sin_addr));
+	client_commands(&data->serv, data->commands);
+	close(data->serv.fd);
+	show_msg(MSG_CO_DISCO, inet_ntoa(data->serv.addr.sin_addr));
 	return (EXIT_SUCCESS);
 }
 
 int						main(int argc, char **argv)
 {
+	t_data				data;
+
 	if (argc != 3)
 	{
 		printf("Usage: ./client addr port\n");
 		return (EXIT_FAILURE);
 	}
-	return (main_client(argv[1], ft_atoi(argv[2])));
+	data.addr = argv[1];
+	data.portno = ft_atoi(argv[2]);
+	if (init_client(&data) == -1)
+		return (EXIT_FAILURE);
+	return (main_client(&data));
 }

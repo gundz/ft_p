@@ -1,6 +1,19 @@
 #ifndef		CLIENT_H
 # define	CLIENT_H
 
-int			init_client(char *addr, const int portno, t_socket *serv);
+# include <libftsocket.h>
+# define NB_COMMANDS 1
+
+typedef struct	s_data
+{
+	t_socket	serv;
+	char		*addr;
+	int			portno;
+	t_command	*commands;
+}				t_data;
+
+int				init_client(t_data *data);
+
+int				command_get_file(const int sockfd, char *command);
 
 #endif

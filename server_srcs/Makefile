@@ -3,6 +3,7 @@ NAME =			../server
 SRCS =			\
 				main.c \
 				init.c \
+				commands.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			PROGAM

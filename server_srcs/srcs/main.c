@@ -5,65 +5,53 @@
 #include <libftsocket.h>
 #include <server.h>
 
-void					server_commands(t_socket *cli)
+void					server_commands(t_socket *cli, t_command *commands, int *run)
 {
-	char				*command;
+	char				*cinput;
+	int					command_id;
 
-	while (1)
+	cinput = get_char_string(cli->fd);
+	command_id = command_get_function_id(commands, cinput, NB_COMMANDS);
+	if (ft_strcmp(cinput, "quit") == 0)
 	{
-		command = get_char_string(cli->fd);
-		if (ft_strcmp(command, "quit") == 0)
-		{
-			send_int32(cli->fd, MSG_CO_DISCO);
-			break ;
-		}
-		if (ft_strcmp(command, "get") == 0)
-		{
-			send_int32(cli->fd, MSG_FILE_GET_CONFIRM);
-			send_file(cli->fd, "/mnt/FCB83109B830C3C4/tmp/test.mp3");
-		}
-		else
-			send_int32(cli->fd, MSG_COMMAND_ERROR);
+		send_int32(cli->fd, MSG_CO_DISCO);
+		*run = 0;
 	}
+	else if (command_id == -1)
+		send_int32(cli->fd, MSG_COMMAND_ERROR);
+	else
+		commands[command_id].f(cli->fd, cinput);
+	free(cinput);
 }
 
-int						get_client(t_socket *serv)
+int						main_server(t_data *data)
 {
-	t_socket			cli;
+	int					run;
 
-	cli.socklen = sizeof(cli.addr);
-	cli.fd = accept(serv->fd, (struct sockaddr *)&cli.addr, &(cli.socklen));
-	if (cli.fd < 0)
-	{
-		perror("ERROR on accept");
-		return (-1);
-	}
-	send_int32(cli.fd, MSG_CO_CONFIRM);
-	server_commands(&cli);
-	close(cli.fd);
-	return (0);
-}
-
-int						main_server(const int portno)
-{
-	t_socket			serv;
-
-	if (init_server(portno, &serv) == -1)
+	run = 1;
+	//FORK
+	if (get_client(&data->serv, &data->cli) == -1)
 		return (EXIT_FAILURE);
-
-	if (get_client(&serv) == -1)
-		return (EXIT_FAILURE);
-
-	close(serv.fd);
-	return (EXIT_SUCCESS);	
+	while (run == 1)
+		server_commands(&data->cli, data->commands, &run);
+	close(data->cli.fd);
+	//END FORK
+	free(data->commands);
+	close(data->serv.fd);
+	return (EXIT_SUCCESS);
 }
 
 int						main(int argc, char **argv)
 {
+	t_data				data;
+
 	if (argc != 2)
 	{
 		printf("Usage: ./server port\n");
 		return (EXIT_FAILURE);
 	}
-	return (main_server(ft_atoi(argv[1])));
+	data.portno = ft_atoi(argv[1]);
+	if (init_server(&data) == -1)
+		return (EXIT_FAILURE);
+	return (main_server(&data));
 }

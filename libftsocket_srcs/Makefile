@@ -9,6 +9,7 @@ SRCS =			\
 				file_io.c \
 				data.c \
 				show.c \
+				commands.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			LIB
