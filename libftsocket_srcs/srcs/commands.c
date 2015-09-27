@@ -17,7 +17,7 @@ int						command_get_function_id(t_command *commands, char *cinput, const int nb
 	i = 0;
 	while (i < nb_commands)
 	{
-		if (ft_strcmp(commands[i].command, cinput) == 0)
+		if (ft_strstr(cinput, commands[i].command) != NULL)
 			return (i);
 		i++;
 	}

@@ -5,26 +5,32 @@
 #include <libftsocket.h>
 #include <client.h>
 
+char					*prompt(t_socket *serv)
+{
+	char				*cinput;
+
+	ft_putstr(inet_ntoa(serv->addr.sin_addr));
+	ft_putstr(" $>: ");
+	get_next_line(0, &cinput);
+	send_char_string(serv->fd, cinput);
+	return (cinput);
+}
+
 void					client_commands(t_socket *serv, t_command *commands)
 {
 	char				*cinput;
 	int					command_id;
-	int					msg;
 	int					run;
 
 	run = 1;
 	while (run == 1)
 	{
-		ft_putstr(inet_ntoa(serv->addr.sin_addr));
-		ft_putstr(" $>: ");
-		get_next_line(0, &cinput);
-		send_char_string(serv->fd, cinput);
-		msg = get_int32(serv->fd);
+		cinput = prompt(serv);
 		command_id = command_get_function_id(commands, cinput, NB_COMMANDS);
 		if (ft_strcmp(cinput, "quit") == 0)
 			run = 0;
 		else if (command_id == -1)
-			show_msg(msg, NULL);
+			show_msg(get_int32(serv->fd), NULL);
 		else
 			commands[command_id].f(serv->fd, cinput);
 		free(cinput);

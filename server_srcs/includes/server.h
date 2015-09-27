@@ -2,7 +2,7 @@
 # define	SERVER_H
 
 # include <libftsocket.h>
-# define NB_COMMANDS 1
+# define NB_COMMANDS 2
 
 typedef struct	s_data
 {
@@ -15,5 +15,6 @@ typedef struct	s_data
 int			init_server(t_data *data);
 
 int			command_send_file(const int sockfd, char *path);
+int			command_get_file(const int sockfd, char *command);
 
 #endif

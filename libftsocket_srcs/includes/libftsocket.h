@@ -35,7 +35,7 @@ int						send_char_string(const int fd, char *msg);
 char					*get_char_string(const int fd);
 int						send_data(const int fd, void *data, int size);
 int						get_data(const int fd, void **data);
-int						send_file(const int sockfd, char *path, const int fd);
+int						send_file(const int sockfd, char *path, const int fd, void (*f)(long int, long int));
 int						get_file(const int sockfd, void (*f)(long int, long int));
 
 int						open_file_read(char *path);

@@ -11,6 +11,7 @@ t_command				*init_commands(const int nb_commands)
 	if (!(commands = (t_command *)malloc(sizeof(t_command) * nb_commands)))
 		return (NULL);
 	commands[0] = set_command("get", &command_send_file);
+	commands[1] = set_command("put", &command_get_file);
 	return (commands);
 }
 

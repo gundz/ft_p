@@ -16,11 +16,12 @@ int						get_file_stats(const int fd, struct stat *buf)
 	return (0);
 }
 
-int						send_file(const int sockfd, char *path, const int fd)
+int						send_file(const int sockfd, char *path, const int fd, void (*f)(long int, long int))
 {
 	struct stat			buf_stat;
 	char				buf[DATA_BUF_SIZE];
 	int					n;
+	int					j;
 
 	if (send_char_string(sockfd, ft_basename(path)) == -1)
 		return (-1);
@@ -28,8 +29,18 @@ int						send_file(const int sockfd, char *path, const int fd)
 		return (-1);
 	if (send_data(sockfd, &buf_stat, sizeof(buf)))
 		return (-1);
+	if (f != NULL)
+		printf("\tfile: %s\n", ft_basename(path));
+	j = 0;
 	while ((n = read(fd, &buf, DATA_BUF_SIZE)) > 0)
+	{
 		send_data(sockfd, &buf, n);
+		j += n;
+		if (f != NULL)
+			f(j, buf_stat.st_size);
+	}
+	if (f != NULL)
+		f(j, buf_stat.st_size);
 	return (0);
 }
 
@@ -51,10 +62,11 @@ int						write_file(const int fd, const int sockfd, void (*f)(long int, long int
 		write(fd, data, sizeof(char) * j);
 		free(data);
 		i += j;
-		f(i, buf_stat->st_size);
+		if (f != NULL)
+			f(i, buf_stat->st_size);
 	}
-	f(i, buf_stat->st_size);
-	printf("\n");
+	if (f != NULL)
+		f(i, buf_stat->st_size);
 	free(buf_stat);
 	return (0);
 }
@@ -66,7 +78,8 @@ int						get_file(const int sockfd, void (*f)(long int, long int))
 
 	if ((path = get_char_string(sockfd)) == NULL)
 		return (-1);
-	printf("\tfile: %s\n", path);
+	if (f != NULL)
+		printf("\tfile: %s\n", path);
 	if ((fd = open_file_write(path)) == -1)
 		return (-1);
 	write_file(fd, sockfd, f);

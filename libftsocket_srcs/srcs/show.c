@@ -18,4 +18,6 @@ void					show_percent(const long int i, const long int size)
 		fflush(stdout);
 		tmp = percent;
 	}
+	if (percent == 100)
+		printf("\n");
 }
