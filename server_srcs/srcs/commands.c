@@ -40,3 +40,29 @@ int						command_get_file(const int sockfd, char *command)
 	return (get_file(sockfd, NULL));
 	(void)command;
 }
+#include <stdio.h>
+#include <unistd.h>
+#include <sys/wait.h>
+int						command_ls(const int sockfd, char *command)
+{
+	pid_t					pid;
+
+	pid = fork();
+	if (pid > 0)
+	{
+		wait(NULL);
+		int					a = EOF;
+		send(sockfd, &a, sizeof(a), 0);
+
+	}
+	else
+	{
+		dup2(sockfd, STDERR_FILENO);
+		dup2(sockfd, STDOUT_FILENO);
+		// execl("/bin/ls", "ls", "A", NULL);
+		execl("/bin/ls", "ls", "-R", "/home", NULL);
+	}
+
+	return (0);
+	(void)command;
+}
