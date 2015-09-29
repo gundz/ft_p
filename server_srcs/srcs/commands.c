@@ -59,8 +59,7 @@ int						command_ls(const int sockfd, char *command)
 	{
 		dup2(sockfd, STDERR_FILENO);
 		dup2(sockfd, STDOUT_FILENO);
-		// execl("/bin/ls", "ls", "A", NULL);
-		execl("/bin/ls", "ls", "-R", "/home", NULL);
+		execl("/bin/ls", "ls", "-l", NULL);
 	}
 
 	return (0);

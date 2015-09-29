@@ -3,7 +3,7 @@ LIBFTSOCKET_SRCS = ./libftsocket_srcs/
 SERVER_SRCS = ./server_srcs/
 CLIENT_SRCS = ./client_srcs/
 
-all: re libft libftsocket server client
+all: libft libftsocket server client
 
 libft:
 	@ make -sC $(LIBFT_SRCS)
