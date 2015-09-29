@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <sys/wait.h>
 #include <libft.h>
 #include <libftsocket.h>
 #include <server.h>
@@ -21,7 +23,7 @@ int						command_send_file(const int sockfd, char *path)
 		return (-1);
 	}
 	send_int32(sockfd, MSG_FILE_GET_CONFIRM);
-	send_file(sockfd, path, fd, NULL);
+	send_file(sockfd, path, fd, &show_percent);
 	close(fd);
 	ft_freectab(tmp);
 	return (0);
@@ -40,28 +42,29 @@ int						command_get_file(const int sockfd, char *command)
 	return (get_file(sockfd, NULL));
 	(void)command;
 }
-#include <stdio.h>
-#include <unistd.h>
-#include <sys/wait.h>
+
 int						command_ls(const int sockfd, char *command)
 {
-	pid_t					pid;
+	pid_t				pid;
+	const int			eof = EOF;
 
 	pid = fork();
 	if (pid > 0)
 	{
 		wait(NULL);
-		int					a = EOF;
-		send(sockfd, &a, sizeof(a), 0);
+		send(sockfd, &eof, sizeof(eof), 0);
 
 	}
 	else
 	{
 		dup2(sockfd, STDERR_FILENO);
 		dup2(sockfd, STDOUT_FILENO);
-		execl("/bin/ls", "ls", "-l", NULL);
+		if (execl("/bin/ls", "ls", "-l", NULL) == -1)
+		{
+			perror("execl: ls");
+			send(sockfd, &eof, sizeof(eof), 0);
+		}
 	}
-
 	return (0);
 	(void)command;
 }

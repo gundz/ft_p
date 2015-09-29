@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include <libft.h>
 #include <libftsocket.h>
 
@@ -39,8 +40,7 @@ int						command_send_file(const int sockfd, char *path)
 	ft_freectab(tmp);
 	return (0);
 }
-#include <stdio.h>
-#include <string.h>
+
 int						command_ls(const int sockfd, char *command)
 {
 	int					n;
@@ -50,7 +50,7 @@ int						command_ls(const int sockfd, char *command)
 	while ((n = recv(sockfd, &buf, DATA_BUF_SIZE, 0)) > 0)
 	{
 		buf[n] = '\0';
-		if ((tmp = strchr(buf, EOF)) != NULL)
+		if ((tmp = ft_strchr(buf, EOF)) != NULL)
 		{
 			*tmp = '\0';
 			printf("%s", buf);
