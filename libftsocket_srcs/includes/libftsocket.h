@@ -35,15 +35,17 @@ int						send_char_string(const int fd, char *msg);
 char					*get_char_string(const int fd);
 int						send_data(const int fd, void *data, int size);
 int						get_data(const int fd, void **data);
-int						send_file(const int sockfd, char *path, const int fd, void (*f)(long int, long int));
-int						get_file(const int sockfd, void (*f)(long int, long int));
+
+int						send_file(const int sockfd, char *path, \
+	void (*f)(off_t, off_t));
+int						get_file(int sockfd, char *path, void (*f)(off_t, off_t));
 
 int						open_file_read(char *path);
 int						open_file_write(char *path);
 
 void					show_msg(const int msg, char *more);
 
-void					show_percent(const long int i, const long int size);
+void					show_percent(const off_t i, const off_t size);
 
 t_command				set_command(char *command, int (*f)(int, char *));
 int						command_get_function_id(t_command *commands, char *cinput, const int nb_commands);

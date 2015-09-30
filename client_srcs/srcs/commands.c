@@ -2,43 +2,48 @@
 #include <libft.h>
 #include <libftsocket.h>
 
-int						command_get_file(const int sockfd, char *command)
+int						command_get_file(int sockfd, char *command)
 {
-	int					msg;
+	char				*path;
+	char				*filename;
 
-	msg = get_int32(sockfd);
-	if (msg != MSG_FILE_GET_CONFIRM)
+	if ((path = get_char_string(sockfd)) == NULL)
+		return (-1);
+	filename = ft_basename(path);
+	if (get_file(sockfd, filename, &show_percent) == -1)
 	{
-		show_msg(msg, NULL);
+		perror("Error get_file");
 		return (-1);
 	}
-	return (get_file(sockfd, &show_percent));
+	return (0);
 	(void)command;
 }
 
-int						command_send_file(const int sockfd, char *path)
+int						command_put_file(int sockfd, char *command)
 {
 	int					fd;
+	char				*path;
 	char				**tmp;
+	int					ret;
 
-	tmp = ft_strsplit(path, ' ');
+	tmp = ft_strsplit(command, ' ');
 	if (ft_ctablen(tmp) != 2)
 	{
-		send_int32(sockfd, MSG_FILE_SEND_USAGE);
 		ft_freectab(tmp);
 		return (-1);
 	}
 	path = tmp[1];
 	if ((fd = open_file_read(path)) == -1)
 	{
-		send_int32(sockfd, MSG_FILE_SEND_NOT_EXISTS);
+		ft_freectab(tmp);
 		return (-1);
 	}
-	send_int32(sockfd, MSG_FILE_GET_CONFIRM);
-	send_file(sockfd, path, fd, &show_percent);
-	close(fd);
+	send_char_string(sockfd, path);
+	ret = send_file(sockfd, path, &show_percent);
 	ft_freectab(tmp);
-	return (0);
+	if (ret == -1)
+		perror("Error: send_file");
+	return (ret);
 }
 
 int						command_ls(const int sockfd, char *command)

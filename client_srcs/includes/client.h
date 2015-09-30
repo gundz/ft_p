@@ -14,8 +14,8 @@ typedef struct	s_data
 
 int				init_client(t_data *data);
 
-int				command_get_file(const int sockfd, char *command);
-int				command_send_file(const int sockfd, char *path);
+int				command_put_file(int sockfd, char *command);
+int				command_get_file(int sockfd, char *command);
 
 int				command_ls(const int sockfd, char *command);
 

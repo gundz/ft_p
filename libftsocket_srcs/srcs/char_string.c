@@ -21,9 +21,9 @@ int					send_char_string(const int fd, char *msg)
 
 char				*get_char_string(const int fd)
 {
-	int32_t		len;
+	int32_t			len;
 	char			*msg;
-	int32_t		n;
+	int32_t			n;
 
 	len = get_int32(fd);
 	if (!(msg = (char *)malloc(sizeof(char) * (len + 1))))

@@ -5,7 +5,8 @@ SRCS =			\
 				uint32.c \
 				msg.c \
 				char_string.c \
-				file.c \
+				get_file.c \
+				send_file.c \
 				file_io.c \
 				data.c \
 				show.c \
