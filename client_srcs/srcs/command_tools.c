@@ -1,5 +1,5 @@
 #include <libft.h>
-#include <libftsocket.h>
+#include <client.h>
 
 t_command				set_command(char *command, int (*f)(int, char *))
 {

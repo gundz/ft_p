@@ -4,44 +4,37 @@
 #include <libftsocket.h>
 #include <server.h>
 
-int						command_get_file(int sockfd, char *command)
+int						command_get_file(int sockfd)
 {
 	int					fd;
 	char				*path;
-	char				**tmp;
-	int					ret;
+	char				*tmp;
 
-	tmp = ft_strsplit(command, ' ');
-	if (ft_ctablen(tmp) != 2)
+	tmp = get_char_string(sockfd);
+	if ((path = check_command_usage(tmp, 1)) == NULL)
 	{
 		send_int32(sockfd, MSG_FILE_GET_USAGE);
-		ft_freectab(tmp);
+		free(tmp);
 		return (-1);
 	}
-	path = tmp[1];
 	if ((fd = open_file_read(path)) == -1)
 	{
 		send_int32(sockfd, MSG_FILE_NOT_EXISTS);
-		ft_freectab(tmp);
+		free(tmp);
 		return (-1);
 	}
 	send_int32(sockfd, MSG_FILE_GET_CONFIRM);
 	send_char_string(sockfd, path);
-	ret = send_file(sockfd, path, NULL);
-	ft_freectab(tmp);
-	if (ret == -1)
-		perror("Error: send_file");
-	return (ret);
+	send_file(sockfd, path, NULL);
+	free(tmp);
+	return (0);
 }
 
-int						command_put_file(int sockfd, char *command)
+int						command_put_file(int sockfd)
 {
 	char				*path;
 	char				*filename;
-	int					msg;
 
-	if ((msg = get_int32(sockfd)) != MSG_FILE_PUT_CONFIRM)
-		return (-1);
 	if ((path = get_char_string(sockfd)) == NULL)
 		return (-1);
 	filename = ft_basename(path);
@@ -51,10 +44,9 @@ int						command_put_file(int sockfd, char *command)
 		return (-1);
 	}
 	return (0);
-	(void)command;
 }
 
-int						command_ls(const int sockfd, char *command)
+int						command_ls(const int sockfd)
 {
 	pid_t				pid;
 	const int			eof = EOF;
@@ -64,7 +56,6 @@ int						command_ls(const int sockfd, char *command)
 	{
 		wait(NULL);
 		send(sockfd, &eof, sizeof(eof), 0);
-
 	}
 	else
 	{
@@ -76,5 +67,27 @@ int						command_ls(const int sockfd, char *command)
 		}
 	}
 	return (0);
-	(void)command;
+}
+
+int						command_pwd(const int sockfd)
+{
+	pid_t				pid;
+	const int			eof = EOF;
+
+	pid = fork();
+	if (pid > 0)
+	{
+		wait(NULL);
+		send(sockfd, &eof, sizeof(eof), 0);
+	}
+	else
+	{
+		dup2(sockfd, STDOUT_FILENO);
+		if (execl("/bin/pwd", "pwd", NULL) == -1)
+		{
+			perror("execl: pwd");
+			send(sockfd, &eof, sizeof(eof), 0);
+		}
+	}
+	return (0);
 }

@@ -12,7 +12,6 @@ char					*prompt(t_socket *serv)
 	ft_putstr(inet_ntoa(serv->addr.sin_addr));
 	ft_putstr(" $>: ");
 	get_next_line(0, &cinput);
-	send_char_string(serv->fd, cinput);
 	return (cinput);
 }
 
@@ -28,9 +27,12 @@ void					client_commands(t_socket *serv, t_command *commands)
 		cinput = prompt(serv);
 		command_id = command_get_function_id(commands, cinput, NB_COMMANDS);
 		if (ft_strcmp(cinput, "quit") == 0)
+		{
+			send_int32(serv->fd, MSG_CO_DISCO);
 			run = 0;
+		}
 		else if (command_id == -1)
-			show_msg(get_int32(serv->fd), NULL);
+			show_msg(MSG_COMMAND_ERROR, NULL);
 		else
 			commands[command_id].f(serv->fd, cinput);
 		free(cinput);

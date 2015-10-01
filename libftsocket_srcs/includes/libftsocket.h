@@ -10,11 +10,11 @@
 
 # define DATA_BUF_SIZE 4096
 
-typedef struct	s_command
-{
-	char		*command;
-	int			(*f)(int, char *);
-}				t_command;
+// typedef struct	s_command
+// {
+// 	char		*command;
+// 	int			(*f)(int, char *);
+// }				t_command;
 
 typedef int SOCKET;
 
@@ -47,7 +47,6 @@ void					show_msg(const int msg, char *more);
 
 void					show_percent(const off_t i, const off_t size);
 
-t_command				set_command(char *command, int (*f)(int, char *));
-int						command_get_function_id(t_command *commands, char *cinput, const int nb_commands);
+char					*check_command_usage(char *command, unsigned int nb_arg);
 
 #endif

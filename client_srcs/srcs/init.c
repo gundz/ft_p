@@ -13,6 +13,7 @@ t_command				*init_commands(const int nb_commands)
 	commands[0] = set_command("put", &command_put_file);
 	commands[1] = set_command("get", &command_get_file);
 	commands[2] = set_command("ls", &command_ls);
+	commands[3] = set_command("pwd", &command_pwd);
 	return (commands);
 }
 

@@ -7,21 +7,18 @@
 
 void					server_commands(t_socket *cli, t_command *commands, int *run)
 {
-	char				*cinput;
+	int					msg;
 	int					command_id;
 
-	cinput = get_char_string(cli->fd);
-	command_id = command_get_function_id(commands, cinput, NB_COMMANDS);
-	if (ft_strcmp(cinput, "quit") == 0)
-	{
-		send_int32(cli->fd, MSG_CO_DISCO);
+	msg = get_int32(cli->fd);
+	command_id = command_get_function_id(commands, msg, NB_COMMANDS);
+	if (msg == MSG_CO_DISCO)
 		*run = 0;
-	}
 	else if (command_id == -1)
 		send_int32(cli->fd, MSG_COMMAND_ERROR);
 	else
-		commands[command_id].f(cli->fd, cinput);
-	free(cinput);
+		commands[command_id].f(cli->fd);
+
 }
 
 int						main_server(t_data *data)
