@@ -6,7 +6,13 @@ int						command_get_file(int sockfd, char *command)
 {
 	char				*path;
 	char				*filename;
+	int					msg;
 
+	if ((msg = get_int32(sockfd)) != MSG_FILE_GET_CONFIRM)
+	{
+		show_msg(msg, NULL);
+		return (-1);
+	}
 	if ((path = get_char_string(sockfd)) == NULL)
 		return (-1);
 	filename = ft_basename(path);
@@ -29,15 +35,20 @@ int						command_put_file(int sockfd, char *command)
 	tmp = ft_strsplit(command, ' ');
 	if (ft_ctablen(tmp) != 2)
 	{
+		send_int32(sockfd, MSG_FILE_GET_USAGE);
+		show_msg(MSG_FILE_GET_USAGE, NULL);
 		ft_freectab(tmp);
 		return (-1);
 	}
 	path = tmp[1];
 	if ((fd = open_file_read(path)) == -1)
 	{
+		send_int32(sockfd, MSG_FILE_NOT_EXISTS);
+		show_msg(MSG_FILE_NOT_EXISTS, NULL);
 		ft_freectab(tmp);
 		return (-1);
 	}
+	send_int32(sockfd, MSG_FILE_PUT_CONFIRM);
 	send_char_string(sockfd, path);
 	ret = send_file(sockfd, path, &show_percent);
 	ft_freectab(tmp);

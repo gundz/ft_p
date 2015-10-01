@@ -11,8 +11,10 @@ void				show_msg(const int msg, char *more)
 		printf("%s: Disconnected from server\n", more);
 	if (msg == MSG_COMMAND_ERROR)
 		printf("Invalid command\n");
-	if (msg == MSG_FILE_SEND_NOT_EXISTS)
+	if (msg == MSG_FILE_NOT_EXISTS)
 		printf("Error file does not exists\n");
-	if (msg == MSG_FILE_SEND_USAGE)
+	if (msg == MSG_FILE_PUT_USAGE)
+		printf("Usage put __file__\n");
+	if (msg == MSG_FILE_GET_USAGE)
 		printf("Usage get __file__\n");
 }
