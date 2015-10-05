@@ -12,7 +12,7 @@ void				show_msg(const int msg, char *more)
 	if (msg == MSG_COMMAND_ERROR)
 		printf("Error: Invalid command\n");
 	if (msg == MSG_FILE_NOT_EXISTS)
-		printf("Error file does not exists\n");
+		printf("Error: file does not exists\n");
 	if (msg == MSG_FILE_PUT_USAGE)
 		printf("Error: Usage put __file__\n");
 	if (msg == MSG_FILE_GET_USAGE)

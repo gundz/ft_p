@@ -10,7 +10,6 @@ int						open_file_read(char *path)
 
 	if ((fd = open(path, O_RDONLY)) == -1)
 	{
-		perror("Error while opening file");
 		return (-1);
 	}
 	return (fd);
@@ -22,7 +21,6 @@ int						open_file_write(char *path)
 
 	if ((fd = open(path, O_WRONLY | O_CREAT, 0644)) == -1)
 	{
-		perror("Error while opening file");
 		return (-1);
 	}
 	return (fd);

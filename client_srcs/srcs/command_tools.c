@@ -1,7 +1,7 @@
 #include <libft.h>
 #include <client.h>
 
-t_command				set_command(char *command, int (*f)(int, char *))
+t_command				set_command(char *command, int (*f)())
 {
 	t_command			commands;
 

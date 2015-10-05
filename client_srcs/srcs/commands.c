@@ -52,7 +52,7 @@ int						command_put_file(int sockfd, char *command)
 	return (0);
 }
 
-int						command_ls(const int sockfd, char *command)
+int						command_ls(int sockfd)
 {
 	int					n;
 	char				buf[DATA_BUF_SIZE + 1];
@@ -72,11 +72,10 @@ int						command_ls(const int sockfd, char *command)
 			printf("%s", buf);
 
 	}
-	(void)command;
 	return (0);
 }
 
-int						command_pwd(const int sockfd, char *command)
+int						command_pwd(int sockfd)
 {
 	int					n;
 	char				buf[DATA_BUF_SIZE + 1];
@@ -96,7 +95,6 @@ int						command_pwd(const int sockfd, char *command)
 			printf("%s", buf);
 
 	}
-	(void)command;
 	return (0);
 }
 
