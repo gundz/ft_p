@@ -1,6 +1,6 @@
 #include <server.h>
 
-t_command				set_command(int command, int (*f)(int))
+t_command				set_command(int command, int (*f)())
 {
 	t_command			commands;
 

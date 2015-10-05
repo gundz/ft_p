@@ -1,6 +1,7 @@
 #include <errno.h>
 #include <stdio.h>
 
+#include <limits.h>
 #include <libftsocket.h>
 #include <server.h>
 
@@ -14,6 +15,7 @@ t_command				*init_commands(const int nb_commands)
 	commands[1] = set_command(MSG_FILE_GET, &command_get_file);
 	commands[2] = set_command(MSG_LS, &command_ls);
 	commands[3] = set_command(MSG_PWD, &command_pwd);
+	commands[4] = set_command(MSG_CD, &command_cd);
 	return (commands);
 }
 
@@ -30,5 +32,6 @@ int						init_server(t_data *data)
 	listen(data->serv.fd, 5);
 	if ((data->commands = init_commands(NB_COMMANDS)) == NULL)
 		return (-1);
+	getcwd(data->root_path, PATH_MAX);
 	return (0);	
 }

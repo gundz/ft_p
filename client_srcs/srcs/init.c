@@ -14,6 +14,7 @@ t_command				*init_commands(const int nb_commands)
 	commands[1] = set_command("get", &command_get_file);
 	commands[2] = set_command("ls", &command_ls);
 	commands[3] = set_command("pwd", &command_pwd);
+	commands[4] = set_command("cd", &command_cd);
 	return (commands);
 }
 

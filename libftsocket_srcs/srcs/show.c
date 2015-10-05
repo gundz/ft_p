@@ -14,7 +14,7 @@ void					show_percent(const off_t i, const off_t size)
 	percent = get_percent(i, size);
 	if (tmp != percent || tmp == 0)
 	{
-		printf("\t%lld/%lld | %2.f%%\r", i, size, percent);		
+		printf("\t%lld/%lld | %2.f%%\r", (long long unsigned int)i, (long long unsigned int)size, percent);
 		fflush(stdout);
 		tmp = percent;
 	}

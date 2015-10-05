@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <sys/wait.h>
+#include <limits.h>
 #include <libft.h>
 #include <libftsocket.h>
 #include <server.h>
@@ -89,5 +90,36 @@ int						command_pwd(const int sockfd)
 			send(sockfd, &eof, sizeof(eof), 0);
 		}
 	}
+	return (0);
+}
+
+int						command_cd(int sockfd, t_data *data)
+{
+	char				*new_path;
+	char				*tmp;
+
+	tmp = get_char_string(sockfd);
+	new_path = ft_strijoin(3, getcwd(NULL, PATH_MAX), "/", tmp);
+	free(tmp);
+	if (chdir(new_path) == -1)
+	{
+		send_int32(sockfd, MSG_CD_NO_SUCH_FILE);
+		return (-1);
+	}
+	else
+	{
+		if (ft_strncmp(data->root_path, getcwd(NULL, PATH_MAX), ft_strlen(data->root_path)) != 0)
+		{
+			chdir(data->root_path);
+			send_int32(sockfd, MSG_CD_ACCESS_DENIED);
+			return (-1);
+		}
+		else
+		{
+			send_int32(sockfd, MSG_CD_OK);
+			return (0);
+		}
+	}
+	free(new_path);
 	return (0);
 }

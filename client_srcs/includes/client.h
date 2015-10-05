@@ -2,7 +2,7 @@
 # define	CLIENT_H
 
 # include <libftsocket.h>
-# define NB_COMMANDS 4
+# define NB_COMMANDS 5
 
 typedef struct	s_command
 {
@@ -27,5 +27,7 @@ int				command_put_file(int sockfd, char *command);
 int				command_get_file(int sockfd, char *command);
 int				command_ls(const int sockfd, char *command);
 int				command_pwd(const int sockfd, char *command);
+
+int						command_cd(int sockfd, char *command);
 
 #endif
