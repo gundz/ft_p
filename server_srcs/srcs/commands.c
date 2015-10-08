@@ -120,5 +120,6 @@ int						command_cd(int sockfd, t_data *data)
 	else
 		ret = error_handling(0, sockfd, MSG_CD_OK);
 	free(tmp);
+	free(new_path);
 	return (ret);
 }

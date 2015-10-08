@@ -12,6 +12,7 @@ typedef int SOCKET;
 
 typedef struct			s_socket
 {
+	struct hostent		*p;
 	SOCKET				fd;
 	struct sockaddr_in	addr;
 	socklen_t			socklen;
@@ -25,8 +26,6 @@ int						send_int32(const int fd, const int32_t var);
 int						get_int32(const int fd);
 int						send_char_string(const int fd, char *msg);
 char					*get_char_string(const int fd);
-int						send_data(const int fd, void *data, int size);
-int						get_data(const int fd, void **data);
 
 int						send_file(const int sockfd, int fd, void (*f)(off_t, off_t));
 int						get_file(int sockfd, int fd, void (*f)(off_t, off_t));

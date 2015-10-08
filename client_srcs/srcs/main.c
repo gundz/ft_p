@@ -1,6 +1,6 @@
 #include <errno.h>
 #include <stdio.h>
-
+#include <netdb.h>
 #include <libft.h>
 #include <libftsocket.h>
 #include <client.h>
@@ -9,9 +9,9 @@ char					*prompt(t_socket *serv)
 {
 	char				*cinput;
 
-	ft_putstr(inet_ntoa(serv->addr.sin_addr));
+	ft_putstr(serv->p->h_name);
 	ft_putstr(" $>: ");
-	get_next_line(0, &cinput);
+	get_next_line(STDIN_FILENO, &cinput);
 	return (cinput);
 }
 
@@ -43,12 +43,12 @@ int						main_client(t_data *data)
 {
 	int					msg;
 
-	show_msg(MSG_CO_WAIT, inet_ntoa(data->serv.addr.sin_addr));
+	show_msg(MSG_CO_WAIT, data->serv.p->h_name);
 	msg = get_int32(data->serv.fd);
-	show_msg(msg, inet_ntoa(data->serv.addr.sin_addr));
+	show_msg(msg, data->serv.p->h_name);
 	client_commands(&data->serv, data->commands);
 	close(data->serv.fd);
-	show_msg(MSG_CO_DISCO, inet_ntoa(data->serv.addr.sin_addr));
+	show_msg(MSG_CO_DISCO, data->serv.p->h_name);
 	return (EXIT_SUCCESS);
 }
 
@@ -61,7 +61,8 @@ int						main(int argc, char **argv)
 		printf("Usage: ./client addr port\n");
 		return (EXIT_FAILURE);
 	}
-	data.addr = argv[1];
+	data.serv.p = gethostbyname(argv[1]);
+	data.addr = inet_ntoa( *((struct in_addr *)data.serv.p->h_addr));
 	data.portno = ft_atoi(argv[2]);
 	if (init_client(&data) == -1)
 		return (EXIT_FAILURE);

@@ -8,7 +8,6 @@ SRCS =			\
 				get_file.c \
 				send_file.c \
 				file_io.c \
-				data.c \
 				show.c \
 				command_tools.c \
 
