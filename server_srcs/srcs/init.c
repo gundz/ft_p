@@ -5,20 +5,6 @@
 #include <libftsocket.h>
 #include <server.h>
 
-t_command				*init_commands(const int nb_commands)
-{
-	t_command			*commands;
-
-	if (!(commands = (t_command *)malloc(sizeof(t_command) * nb_commands)))
-		return (NULL);
-	commands[0] = set_command(MSG_FILE_PUT, &command_put_file);
-	commands[1] = set_command(MSG_FILE_GET, &command_get_file);
-	commands[2] = set_command(MSG_LS, &command_ls);
-	commands[3] = set_command(MSG_PWD, &command_pwd);
-	commands[4] = set_command(MSG_CD, &command_cd);
-	return (commands);
-}
-
 int						init_server(t_data *data)
 {
 	static int			yes = 1;
@@ -30,8 +16,7 @@ int						init_server(t_data *data)
 	if (bind(data->serv.fd, (struct sockaddr *)&data->serv.addr, data->serv.socklen) == -1)
 		perror("Error on binding");
 	listen(data->serv.fd, 5);
-	if ((data->commands = init_commands(NB_COMMANDS)) == NULL)
-		return (-1);
+	init_commands(data->commands);
 	getcwd(data->root_path, PATH_MAX);
 	return (0);	
 }

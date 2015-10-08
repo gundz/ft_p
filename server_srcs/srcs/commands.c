@@ -12,13 +12,18 @@ int						command_get_file(int sockfd)
 
 	path = get_char_string(sockfd);
 	if ((fd = open_file_read(path)) == -1)
+	{
+		free(path);
 		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
+	}
 	error_handling(0, sockfd, MSG_FILE_GET_CONFIRM);
 	if (send_file(sockfd, fd, NULL) == -1)
 	{
+		free(path);
 		close(fd);
 		return (error_handling(0, sockfd, MSG_FILE_GET_ERR));
 	}
+	free(path);
 	close(fd);
 	return (0);
 }

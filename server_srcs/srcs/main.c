@@ -36,7 +36,6 @@ int						main_server(t_data *data)
 		server_commands(data, &run);
 	close(data->cli.fd);
 	//END FORK
-	free(data->commands);
 	close(data->serv.fd);
 	return (EXIT_SUCCESS);
 }

@@ -16,13 +16,13 @@ typedef struct	s_data
 	int			portno;
 	t_socket	serv;
 	t_socket	cli;
-	t_command	*commands;
+	t_command	commands[NB_COMMANDS];
 	char		root_path[PATH_MAX];
 }				t_data;
 
 int				init_server(t_data *data);
 
-t_command		set_command(int command, int (*f)());
+void			init_commands(t_command *commands);
 int				command_get_function_id(t_command *commands, int msg, const int nb_commands);
 
 int				command_put_file(int sockfd);
