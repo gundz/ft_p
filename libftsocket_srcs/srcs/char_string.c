@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   char_string.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgundlac <fgundlac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/08 20:37:33 by fgundlac          #+#    #+#             */
+/*   Updated: 2015/10/08 20:37:33 by fgundlac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <errno.h>
 #include <stdio.h>
 
@@ -29,7 +41,9 @@ char				*get_char_string(const int fd)
 	if (!(msg = (char *)malloc(sizeof(char) * (len + 1))))
 		return (NULL);
 	n = 0;
-	while ((n += recv(fd, &(*msg) + n, sizeof(char) * len, 0)) < len);
+	while ((n += recv(fd, &(*msg) + n, sizeof(char) * len, 0)) < len)
+	{
+	}
 	msg[len] = '\0';
 	return (msg);
 }

@@ -1,5 +1,17 @@
-#ifndef		LIBFTSOCKET_H
-# define	LIBFTSOCKET_H
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   libftsocket.h                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgundlac <fgundlac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/08 20:37:21 by fgundlac          #+#    #+#             */
+/*   Updated: 2015/10/08 20:37:22 by fgundlac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#ifndef LIBFTSOCKET_H
+# define LIBFTSOCKET_H
 
 # include <sys/socket.h>
 # include <arpa/inet.h>
@@ -19,7 +31,8 @@ typedef struct			s_socket
 }						t_socket;
 
 SOCKET					open_socket(void);
-int						new_socket(t_socket *socket, const short sin_family, const in_addr_t sin_addr, const u_short sin_port);
+int						new_socket(t_socket *socket, const short sin_family, \
+	const in_addr_t sin_addr, const u_short sin_port);
 int						get_client(t_socket *serv, t_socket *cli);
 
 int						send_int32(const int fd, const int32_t var);

@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgundlac <fgundlac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/08 20:33:56 by fgundlac          #+#    #+#             */
+/*   Updated: 2015/10/08 20:33:57 by fgundlac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <errno.h>
 #include <stdio.h>
 #include <netdb.h>
@@ -66,7 +78,7 @@ int						main(int argc, char **argv)
 		printf("Error: Invalid hostname\n");
 		return (EXIT_FAILURE);
 	}
-	data.addr = inet_ntoa( *((struct in_addr *)data.serv.p->h_addr));
+	data.addr = inet_ntoa(*((struct in_addr *)data.serv.p->h_addr));
 	data.portno = ft_atoi(argv[2]);
 	if (init_client(&data) == -1)
 		return (EXIT_FAILURE);

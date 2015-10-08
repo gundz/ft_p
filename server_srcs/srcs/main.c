@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgundlac <fgundlac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/08 20:36:08 by fgundlac          #+#    #+#             */
+/*   Updated: 2015/10/08 20:36:09 by fgundlac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <errno.h>
 #include <stdio.h>
 
@@ -21,7 +33,6 @@ void					server_commands(t_data *data, int *run)
 		error_handling(0, data->cli.fd, MSG_COMMAND_ERROR);
 	else
 		data->commands[command_id].f(data->cli.fd, data);
-
 }
 
 int						main_server(t_data *data)

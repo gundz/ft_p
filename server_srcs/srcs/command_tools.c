@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   command_tools.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgundlac <fgundlac@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2015/10/08 20:36:00 by fgundlac          #+#    #+#             */
+/*   Updated: 2015/10/08 20:36:02 by fgundlac         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <server.h>
 
-static void				set_command(t_command *commands, int command, int (*f)())
+static void				set_command(t_command *commands, int command, \
+	int (*f)())
 {
 	commands->command = command;
 	commands->f = f;
@@ -15,7 +28,8 @@ void					init_commands(t_command *commands)
 	set_command(&commands[4], MSG_CD, &command_cd);
 }
 
-int						command_get_function_id(t_command *commands, int msg, const int nb_commands)
+int						command_get_function_id(t_command *commands, int msg, \
+	const int nb_commands)
 {
 	int					i;
 
