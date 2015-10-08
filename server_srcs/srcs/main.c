@@ -13,9 +13,12 @@ void					server_commands(t_data *data, int *run)
 	msg = get_int32(data->cli.fd);
 	command_id = command_get_function_id(data->commands, msg, NB_COMMANDS);
 	if (msg == MSG_CO_DISCO)
+	{
+		error_handling(0, -1, MSG_CO_DISCO);
 		*run = 0;
+	}
 	else if (command_id == -1)
-		send_int32(data->cli.fd, MSG_COMMAND_ERROR);
+		error_handling(0, data->cli.fd, MSG_COMMAND_ERROR);
 	else
 		data->commands[command_id].f(data->cli.fd, data);
 

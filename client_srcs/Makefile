@@ -5,6 +5,7 @@ SRCS =			\
 				init.c \
 				command_tools.c \
 				commands.c \
+				error.c \
 
 #TYPE: LIB or PROGRAM
 TYPE =			PROGAM

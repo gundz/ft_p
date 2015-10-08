@@ -8,14 +8,6 @@
 
 # include <msg.h>
 
-# define DATA_BUF_SIZE 4096
-
-// typedef struct	s_command
-// {
-// 	char		*command;
-// 	int			(*f)(int, char *);
-// }				t_command;
-
 typedef int SOCKET;
 
 typedef struct			s_socket
@@ -36,9 +28,8 @@ char					*get_char_string(const int fd);
 int						send_data(const int fd, void *data, int size);
 int						get_data(const int fd, void **data);
 
-int						send_file(const int sockfd, char *path, \
-	void (*f)(off_t, off_t));
-int						get_file(int sockfd, char *path, void (*f)(off_t, off_t));
+int						send_file(const int sockfd, int fd, void (*f)(off_t, off_t));
+int						get_file(int sockfd, int fd, void (*f)(off_t, off_t));
 
 int						open_file_read(char *path);
 int						open_file_write(char *path);

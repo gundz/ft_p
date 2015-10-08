@@ -7,27 +7,19 @@
 
 int						command_get_file(int sockfd)
 {
-	int					fd;
 	char				*path;
-	char				*tmp;
+	int					fd;
 
-	tmp = get_char_string(sockfd);
-	if ((path = check_command_usage(tmp, 1)) == NULL)
-	{
-		send_int32(sockfd, MSG_FILE_GET_USAGE);
-		free(tmp);
-		return (-1);
-	}
+	path = get_char_string(sockfd);
 	if ((fd = open_file_read(path)) == -1)
+		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
+	error_handling(0, sockfd, MSG_FILE_GET_CONFIRM);
+	if (send_file(sockfd, fd, NULL) == -1)
 	{
-		send_int32(sockfd, MSG_FILE_NOT_EXISTS);
-		free(tmp);
-		return (-1);
+		close(fd);
+		return (error_handling(0, sockfd, MSG_FILE_GET_ERR));
 	}
-	send_int32(sockfd, MSG_FILE_GET_CONFIRM);
-	send_char_string(sockfd, path);
-	send_file(sockfd, path, NULL);
-	free(tmp);
+	close(fd);
 	return (0);
 }
 
@@ -35,14 +27,19 @@ int						command_put_file(int sockfd)
 {
 	char				*path;
 	char				*filename;
+	int					fd;
 
 	if ((path = get_char_string(sockfd)) == NULL)
 		return (-1);
 	filename = ft_basename(path);
-	if (get_file(sockfd, filename, NULL) == -1)
+	free(path);
+	if ((fd = open_file_write(filename)) == -1)
+		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
+	send_int32(sockfd, MSG_FILE_PUT_CONFIRM);
+	if (get_file(sockfd, fd, NULL) == -1)
 	{
-		perror("Error get_file");
-		return (-1);
+		close(fd);
+		return (error_handling(-1, -1, MSG_FILE_PUT_ERR));
 	}
 	return (0);
 }
@@ -102,23 +99,16 @@ int						command_cd(int sockfd, t_data *data)
 	new_path = ft_strijoin(3, getcwd(NULL, PATH_MAX), "/", tmp);
 	free(tmp);
 	if (chdir(new_path) == -1)
-	{
-		send_int32(sockfd, MSG_CD_NO_SUCH_FILE);
-		return (-1);
-	}
+		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
 	else
 	{
 		if (ft_strncmp(data->root_path, getcwd(NULL, PATH_MAX), ft_strlen(data->root_path)) != 0)
 		{
 			chdir(data->root_path);
-			send_int32(sockfd, MSG_CD_ACCESS_DENIED);
-			return (-1);
+			return (error_handling(-1, sockfd, MSG_CD_ACCESS_DENIED));
 		}
 		else
-		{
-			send_int32(sockfd, MSG_CD_OK);
-			return (0);
-		}
+			return (error_handling(0, sockfd, MSG_CD_OK));
 	}
 	free(new_path);
 	return (0);

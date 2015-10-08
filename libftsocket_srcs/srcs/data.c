@@ -30,7 +30,7 @@ int						get_data(const int fd, void **data)
 	i = 0;
 	while (i < size)
 	{
-		i += recv(fd, *data + i, DATA_BUF_SIZE, 0);
+		i += recv(fd, *data + i, BUFSIZ, 0);
 	}
 	return (size);
 }

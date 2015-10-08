@@ -31,4 +31,6 @@ int				command_ls(const int sockfd);
 int				command_pwd(const int sockfd);
 int				command_cd(int sockfd, t_data *data);
 
+int				error_handling(int ret, int sockfd, int msg);
+
 #endif

@@ -3,7 +3,7 @@
 
 #include <libftsocket.h>
 
-static int			get_file_core(int sockfd, int fd, void (*f)(off_t, off_t))
+int					get_file(int sockfd, int fd, void (*f)(off_t, off_t))
 {
 	struct stat		s;
 	char			buf[BUFSIZ];
@@ -22,16 +22,5 @@ static int			get_file_core(int sockfd, int fd, void (*f)(off_t, off_t))
 	}
 	if (f)
 		f(i, s.st_size);
-	return (0);
-}
-
-int					get_file(int sockfd, char *path, void (*f)(off_t, off_t))
-{
-	int				fd;
-
-	if ((fd = open_file_write(path)) == -1)
-		return (-1);
-	get_file_core(sockfd, fd, f);
-	close(fd);
 	return (0);
 }

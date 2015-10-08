@@ -29,4 +29,6 @@ int				command_ls(int sockfd);
 int				command_pwd(int sockfd);
 int				command_cd(int sockfd, char *command);
 
+int					error_handling(int ret, int msg, char *more);
+
 #endif

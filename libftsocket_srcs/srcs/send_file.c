@@ -25,8 +25,7 @@ int					safe_send(int sockfd, void *data, int size)
 	return (i);
 }
 
-static int			send_file_core(int sockfd, int fd, \
-	void (*f)(off_t, off_t))
+int					send_file(int sockfd, int fd, void (*f)(off_t, off_t))
 {
 	struct stat		s;
 	void			*addr;
@@ -55,18 +54,3 @@ static int			send_file_core(int sockfd, int fd, \
 	return (0);
 }
 
-int					send_file(int sockfd, char *path, \
-	void (*f)(off_t, off_t))
-{
-	int				fd;
-
-	if ((fd = open_file_read(path)) == -1)
-		return (-1);
-	if (send_file_core(sockfd, fd, f) == -1)
-	{
-		close(fd);
-		return (-1);
-	}
-	close(fd);
-	return (0);
-}
