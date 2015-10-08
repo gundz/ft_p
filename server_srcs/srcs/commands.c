@@ -58,7 +58,7 @@ int						command_ls(const int sockfd)
 	else
 	{
 		dup2(sockfd, STDOUT_FILENO);
-		if (execl("/bin/ls", "ls", "-l", NULL) == -1)
+		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
 		{
 			perror("execl: ls");
 			send(sockfd, &eof, sizeof(eof), 0);
@@ -92,24 +92,28 @@ int						command_pwd(const int sockfd)
 
 int						command_cd(int sockfd, t_data *data)
 {
-	char				*new_path;
+	char				old_path[PATH_MAX];
 	char				*tmp;
+	char				*new_path;
+	int					ret;
 
 	tmp = get_char_string(sockfd);
-	new_path = ft_strijoin(3, getcwd(NULL, PATH_MAX), "/", tmp);
+	getcwd(old_path, PATH_MAX);
+	new_path = ft_strijoin(3, old_path, "/", tmp);
 	free(tmp);
 	if (chdir(new_path) == -1)
-		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
-	else
 	{
-		if (ft_strncmp(data->root_path, getcwd(NULL, PATH_MAX), ft_strlen(data->root_path)) != 0)
-		{
-			chdir(data->root_path);
-			return (error_handling(-1, sockfd, MSG_CD_ACCESS_DENIED));
-		}
-		else
-			return (error_handling(0, sockfd, MSG_CD_OK));
+		free(new_path);
+		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
 	}
-	free(new_path);
-	return (0);
+	tmp = getcwd(NULL, PATH_MAX);
+	if (ft_strncmp(data->root_path, tmp, ft_strlen(data->root_path)) != 0)
+	{
+		chdir(old_path);
+		ret = error_handling(-1, sockfd, MSG_CD_ACCESS_DENIED);
+	}
+	else
+		ret = error_handling(0, sockfd, MSG_CD_OK);
+	free(tmp);
+	return (ret);
 }
