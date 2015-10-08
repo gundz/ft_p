@@ -1,4 +1,3 @@
-#include <errno.h>
 #include <stdio.h>
 
 #include <client.h>
@@ -10,7 +9,7 @@ int					init_client(t_data *data)
 		return (-1);
 	if (connect(data->serv.fd, (struct sockaddr *)&data->serv.addr, data->serv.socklen) < 0)
 	{
-		perror("Error connecting 1");
+		printf("Error: invalid host or port\n");
 		return (-1);
 	}
 	init_commands(data->commands);

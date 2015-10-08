@@ -61,7 +61,11 @@ int						main(int argc, char **argv)
 		printf("Usage: ./client addr port\n");
 		return (EXIT_FAILURE);
 	}
-	data.serv.p = gethostbyname(argv[1]);
+	if ((data.serv.p = gethostbyname(argv[1])) == NULL)
+	{
+		printf("Error: Invalid hostname\n");
+		return (EXIT_FAILURE);
+	}
 	data.addr = inet_ntoa( *((struct in_addr *)data.serv.p->h_addr));
 	data.portno = ft_atoi(argv[2]);
 	if (init_client(&data) == -1)
