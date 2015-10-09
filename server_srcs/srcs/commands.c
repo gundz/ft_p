@@ -49,15 +49,19 @@ int						command_put_file(int sockfd)
 	if ((path = get_char_string(sockfd)) == NULL)
 		return (-1);
 	filename = ft_basename(path);
-	free(path);
 	if ((fd = open_file_write(filename)) == -1)
+	{
+		free(path);
 		return (error_handling(-1, sockfd, MSG_NO_SUCH_FILE));
+	}
 	send_int32(sockfd, MSG_FILE_PUT_CONFIRM);
 	if (get_file(sockfd, fd, NULL) == -1)
 	{
+		free(path);
 		close(fd);
 		return (error_handling(-1, -1, MSG_FILE_PUT_ERR));
 	}
+	free(path);
 	return (0);
 }
 

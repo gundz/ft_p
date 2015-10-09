@@ -19,7 +19,6 @@ int						command_get_file(int sockfd, char *command)
 {
 	int					fd;
 	char				*path;
-	char				*filename;
 	int					msg;
 
 	if ((path = check_command_usage(command, 1)) == NULL)
@@ -30,7 +29,6 @@ int						command_get_file(int sockfd, char *command)
 	send_char_string(sockfd, path);
 	if ((msg = get_int32(sockfd)) != MSG_FILE_GET_CONFIRM)
 		return (error_handling(-1, msg, NULL));
-	filename = ft_basename(path);
 	if (get_file(sockfd, fd, &show_percent) == -1)
 		return (error_handling(-1, MSG_FILE_GET_ERR, NULL));
 	return (0);
