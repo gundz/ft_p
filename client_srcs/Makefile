@@ -16,7 +16,10 @@ SRCS =			\
 				main.c \
 				init.c \
 				command_tools.c \
-				commands.c \
+				command_get_put.c \
+				command_cd.c \
+				command_ls.c \
+				command_pwd.c \
 				error.c \
 
 #TYPE: LIB or PROGRAM
