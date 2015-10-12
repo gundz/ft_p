@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
 #include <stdio.h>
 #include <netdb.h>
 #include <libft.h>

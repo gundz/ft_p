@@ -25,7 +25,7 @@ int					send_char_string(const int fd, char *msg)
 		return (-1);
 	if (send(fd, &(*msg), sizeof(char) * len, 0) != len)
 	{
-		perror("Error while sending char string");
+		printf("Error while sending char string");
 		return (-1);
 	}
 	return (0);

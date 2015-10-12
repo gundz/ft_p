@@ -10,9 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
 #include <stdio.h>
-
 #include <libftsocket.h>
 
 SOCKET				open_socket(void)
@@ -21,7 +19,7 @@ SOCKET				open_socket(void)
 
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
-		perror("Error opening socket");
+		printf("Error while opening socket");
 	return (sock);
 }
 
@@ -44,7 +42,7 @@ int						get_client(t_socket *serv, t_socket *cli)
 	cli->fd = accept(serv->fd, (struct sockaddr *)&cli->addr, &(cli->socklen));
 	if (cli->fd < 0)
 	{
-		perror("ERROR on accept");
+		printf("Error while acept\n");
 		return (-1);
 	}
 	send_int32(cli->fd, MSG_CO_CONFIRM);

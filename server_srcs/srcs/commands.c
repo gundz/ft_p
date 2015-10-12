@@ -81,7 +81,7 @@ int						command_ls(const int sockfd)
 		dup2(sockfd, STDOUT_FILENO);
 		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
 		{
-			perror("execl: ls");
+			printf("Error: ls");
 			send(sockfd, &eof, sizeof(eof), 0);
 		}
 	}
@@ -104,7 +104,7 @@ int						command_pwd(const int sockfd)
 		dup2(sockfd, STDOUT_FILENO);
 		if (execl("/bin/pwd", "pwd", NULL) == -1)
 		{
-			perror("execl: pwd");
+			printf("Error: pwd");
 			send(sockfd, &eof, sizeof(eof), 0);
 		}
 	}

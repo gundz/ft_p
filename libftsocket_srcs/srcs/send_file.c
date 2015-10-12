@@ -10,12 +10,10 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <errno.h>
 #include <stdio.h>
 #include <sys/stat.h>
 #include <fcntl.h>
 #include <sys/mman.h>
-
 #include <libftsocket.h>
 
 int					safe_send(int sockfd, void *data, int size)
@@ -29,7 +27,7 @@ int					safe_send(int sockfd, void *data, int size)
 		j = send(sockfd, data + i, size, 0);
 		if (j < 0)
 		{
-			perror("send_error");
+			printf("send_error");
 			return (-1);
 		}
 		i += j;

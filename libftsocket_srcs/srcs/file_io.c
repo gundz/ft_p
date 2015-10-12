@@ -12,8 +12,6 @@
 
 #include <libftsocket.h>
 #include <fcntl.h>
-
-#include <errno.h>
 #include <stdio.h>
 
 int						open_file_read(char *path)
