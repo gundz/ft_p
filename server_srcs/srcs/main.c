@@ -36,15 +36,23 @@ void					server_commands(t_data *data, int *run)
 int						main_server(t_data *data)
 {
 	int					run;
+	pid_t				pid;
 
 	run = 1;
-	//FORK
-	if (get_client(&data->serv, &data->cli) == -1)
-		return (EXIT_FAILURE);
-	while (run == 1)
-		server_commands(data, &run);
-	close(data->cli.fd);
-	//END FORK
+	while (1)
+	{
+		if (get_client(&data->serv, &data->cli) == -1)
+			return (EXIT_FAILURE);
+		pid = fork();
+		if (pid == 0)
+		{
+			while (run == 1)
+			{
+				server_commands(data, &run);
+				close(data->cli.fd);
+			}
+		}
+	}
 	close(data->serv.fd);
 	return (EXIT_SUCCESS);
 }
