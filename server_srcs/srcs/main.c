@@ -47,10 +47,8 @@ int						main_server(t_data *data)
 		if (pid == 0)
 		{
 			while (run == 1)
-			{
 				server_commands(data, &run);
-				close(data->cli.fd);
-			}
+			close(data->cli.fd);
 		}
 	}
 	close(data->serv.fd);
