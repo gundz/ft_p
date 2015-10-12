@@ -23,9 +23,12 @@ void			init_commands(t_command *commands)
 {
 	set_command(&commands[0], "put", &command_put_file);
 	set_command(&commands[1], "get", &command_get_file);
-	set_command(&commands[2], "ls", &command_ls);
-	set_command(&commands[3], "pwd", &command_pwd);
-	set_command(&commands[4], "cd", &command_cd);
+	set_command(&commands[2], "lls", &command_lls);
+	set_command(&commands[3], "ls", &command_ls);
+	set_command(&commands[4], "lpwd", &command_lpwd);
+	set_command(&commands[5], "pwd", &command_pwd);
+	set_command(&commands[6], "lcd", &command_lcd);
+	set_command(&commands[7], "cd", &command_cd);
 }
 
 int				command_get_function_id(t_command *commands, char *cinput, \

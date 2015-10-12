@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <sys/wait.h>
 #include <libft.h>
 #include <libftsocket.h>
 
@@ -20,6 +21,21 @@ int						command_pwd(int sockfd)
 		}
 		else
 			printf("%s", buf);
+	}
+	return (0);
+}
+
+int						command_lpwd(void)
+{
+	pid_t				pid;
+
+	pid = fork();
+	if (pid > 0)
+		wait(NULL);
+	else
+	{
+		if (execl("/bin/pwd", "pwd", NULL) == -1)
+			printf("Error: lpwd\n");
 	}
 	return (0);
 }

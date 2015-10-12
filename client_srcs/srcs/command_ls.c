@@ -2,6 +2,7 @@
 #include <libft.h>
 #include <libftsocket.h>
 #include <limits.h>
+#include <sys/wait.h>
 
 int						command_ls(int sockfd)
 {
@@ -21,6 +22,21 @@ int						command_ls(int sockfd)
 		}
 		else
 			printf("%s", buf);
+	}
+	return (0);
+}
+
+int						command_lls(void)
+{
+	pid_t				pid;
+
+	pid = fork();
+	if (pid > 0)
+		wait(NULL);
+	else
+	{
+		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
+			printf("Error: lls\n");
 	}
 	return (0);
 }

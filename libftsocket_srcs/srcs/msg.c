@@ -31,10 +31,10 @@ void				show_msg(const int msg, char *more)
 		printf("Error: Usage get __file__\n");
 	if (msg == MSG_FILE_GET_ERR)
 		printf("Error: get error\n");
-	if (msg == MSG_CD_OK)
-		printf("Success: new path = \n");
 	if (msg == MSG_CD_ACCESS_DENIED)
 		printf("Error: Access Denied\n");
 	if (msg == MSG_CD_USAGE)
 		printf("Error: Usage cd __path__\n");
+	if (msg == MSG_LCD_USAGE)
+		printf("Error: Usage lcd __path__\n");
 }

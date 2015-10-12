@@ -18,7 +18,7 @@ int						command_ls(const int sockfd)
 		dup2(sockfd, STDOUT_FILENO);
 		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
 		{
-			printf("Error: ls");
+			printf("Error: ls\n");
 			send(sockfd, &eof, sizeof(eof), 0);
 		}
 	}
