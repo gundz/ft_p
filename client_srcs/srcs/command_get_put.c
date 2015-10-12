@@ -10,6 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdio.h>
 #include <libftsocket.h>
 #include <client.h>
 
@@ -27,6 +28,7 @@ int						command_get_file(int sockfd, char *command)
 	send_char_string(sockfd, path);
 	if ((msg = get_int32(sockfd)) != MSG_FILE_GET_CONFIRM)
 		return (error_handling(-1, msg, NULL));
+	printf("Downloading file: \"%s\"\n", path);
 	if (get_file(sockfd, fd, &show_percent) == -1)
 		return (error_handling(-1, MSG_FILE_GET_ERR, NULL));
 	return (0);
@@ -46,6 +48,7 @@ int						command_put_file(int sockfd, char *command)
 	send_char_string(sockfd, path);
 	if ((msg = get_int32(sockfd)) != MSG_FILE_PUT_CONFIRM)
 		return (error_handling(-1, msg, NULL));
+	printf("Uploading file: \"%s\"\n", path);
 	if (send_file(sockfd, fd, &show_percent) == -1)
 	{
 		close(fd);
