@@ -13,9 +13,9 @@
 #include <stdio.h>
 #include <libftsocket.h>
 
-SOCKET				open_socket(void)
+int					open_socket(void)
 {
-	SOCKET			sock;
+	int				sock;
 
 	sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock < 0)
@@ -23,8 +23,8 @@ SOCKET				open_socket(void)
 	return (sock);
 }
 
-int					new_socket(t_socket *socket, const short sin_family, \
-	const in_addr_t sin_addr, const u_short sin_port)
+int					new_socket(t_socket *socket, short sin_family, \
+	in_addr_t sin_addr, u_short sin_port)
 {
 	if (socket == NULL)
 		return (-1);
@@ -37,7 +37,7 @@ int					new_socket(t_socket *socket, const short sin_family, \
 	return (0);
 }
 
-int						get_client(t_socket *serv, t_socket *cli)
+int					get_client(t_socket *serv, t_socket *cli)
 {
 	cli->socklen = sizeof(cli->addr);
 	cli->fd = accept(serv->fd, (struct sockaddr *)&cli->addr, &(cli->socklen));

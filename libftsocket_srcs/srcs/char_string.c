@@ -14,7 +14,7 @@
 #include <libft.h>
 #include <libftsocket.h>
 
-int					send_char_string(const int fd, char *msg)
+int					send_char_string(int fd, char *msg)
 {
 	int				len;
 
@@ -29,7 +29,7 @@ int					send_char_string(const int fd, char *msg)
 	return (0);
 }
 
-char				*get_char_string(const int fd)
+char				*get_char_string(int fd)
 {
 	int32_t			len;
 	char			*msg;

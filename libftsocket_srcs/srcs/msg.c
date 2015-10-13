@@ -13,7 +13,7 @@
 #include <libftsocket.h>
 #include <stdio.h>
 
-void				show_msg(const int msg, char *more)
+void				show_msg(int msg, char *more)
 {
 	if (msg == MSG_CO_WAIT)
 		printf("%s: Waiting for server confirmation\n", more);

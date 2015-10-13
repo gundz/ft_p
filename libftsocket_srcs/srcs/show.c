@@ -13,12 +13,12 @@
 #include <libftsocket.h>
 #include <stdio.h>
 
-static double			get_percent(const off_t i, const off_t size)
+static double			get_percent(off_t i, off_t size)
 {
 	return ((long double)i * 100 / size);
 }
 
-void					show_percent(const off_t i, const off_t size)
+void					show_percent(off_t i, off_t size)
 {
 	static double		tmp = 0;
 	double				percent;
