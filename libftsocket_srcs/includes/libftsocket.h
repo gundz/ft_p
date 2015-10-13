@@ -20,7 +20,7 @@
 
 # include <msg.h>
 
-typedef int SOCKET;
+typedef int				SOCKET;
 
 typedef struct			s_socket
 {

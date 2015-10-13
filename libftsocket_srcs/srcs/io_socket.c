@@ -23,7 +23,8 @@ SOCKET				open_socket(void)
 	return (sock);
 }
 
-int					new_socket(t_socket *socket, const short sin_family, const in_addr_t sin_addr, const u_short sin_port)
+int					new_socket(t_socket *socket, const short sin_family, \
+	const in_addr_t sin_addr, const u_short sin_port)
 {
 	if (socket == NULL)
 		return (-1);
