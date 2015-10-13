@@ -81,7 +81,7 @@ endif
 	@ echo "\033[4m\033[95md\033[93mo\033[32mn\033[96me\033[0m \033[91m!\033[0m\n"
 
 $(OBJ_PATH)%.o: $(SRC_PATH)%.$(EXTENTION)
-	@ echo -n "\033[37;7m+\033[0m"
+	@ printf "\033[37;7m+\033[0m"
 	@ mkdir -p $(OBJ_PATH) 2> /dev/null
 	@ $(CC) $(CFLAGS) $(INC) -c $< -o $@
 
