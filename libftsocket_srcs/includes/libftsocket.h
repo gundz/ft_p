@@ -31,6 +31,7 @@ int						open_socket(void);
 int						new_socket(t_socket *socket, short sin_family, \
 	in_addr_t sin_addr, u_short sin_port);
 int						get_client(t_socket *serv, t_socket *cli);
+int32_t					safe_recv(int sockfd, void *buf, int buf_size);
 
 int						send_int32(int fd, int32_t var);
 int						get_int32(int fd);

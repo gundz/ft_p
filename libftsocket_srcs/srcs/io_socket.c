@@ -49,3 +49,13 @@ int					get_client(t_socket *serv, t_socket *cli)
 	send_int32(cli->fd, MSG_CO_CONFIRM);
 	return (0);
 }
+
+int					safe_recv(int sockfd, void *buf, int buf_size)
+{
+	int				i;
+
+	i = recv(sockfd, buf, buf_size, 0);
+	if (i <= 0)
+		printf("Error: server disconected\n");
+	return (i);
+}

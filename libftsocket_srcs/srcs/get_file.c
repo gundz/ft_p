@@ -12,9 +12,9 @@
 
 #include <sys/stat.h>
 #include <stdio.h>
-
 #include <libftsocket.h>
 
+#include <errno.h>
 int					get_file(int sockfd, int fd, void (*f)(off_t, off_t))
 {
 	struct stat		s;
@@ -22,11 +22,13 @@ int					get_file(int sockfd, int fd, void (*f)(off_t, off_t))
 	off_t			i;
 	off_t			j;
 
-	recv(sockfd, &s, sizeof(struct stat), 0);
+	if (safe_recv(sockfd, &s, sizeof(struct stat)) <= 0)
+		return (-1);
 	i = 0;
 	while (i < s.st_size)
 	{
-		j = recv(sockfd, &buf, BUFSIZ, 0);
+		if ((j = recv(sockfd, &buf, BUFSIZ, 0)) <= 0)
+			return (-1);
 		write(fd, buf, j);
 		if (f)
 			f(i, s.st_size);

@@ -30,7 +30,7 @@ void				show_msg(int msg, char *more)
 	if (msg == MSG_FILE_GET_USAGE)
 		printf("Error: Usage get __file__\n");
 	if (msg == MSG_FILE_GET_ERR)
-		printf("Error: get error\n");
+		printf("\nError: get error\n");
 	if (msg == MSG_CD_ACCESS_DENIED)
 		printf("Error: Access Denied\n");
 	if (msg == MSG_CD_USAGE)
