@@ -72,6 +72,11 @@ int						main(int argc, char **argv)
 		printf("Usage: ./client addr port\n");
 		return (EXIT_FAILURE);
 	}
+	if (ft_isnumbers(argv[2]) != 1)
+	{
+		printf("Usage: ./client addr port\n");
+		return (EXIT_FAILURE);
+	}
 	if ((data.serv.p = gethostbyname(argv[1])) == NULL)
 	{
 		printf("Error: Invalid hostname\n");

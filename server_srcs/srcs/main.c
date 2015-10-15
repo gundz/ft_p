@@ -64,6 +64,11 @@ int						main(int argc, char **argv)
 		printf("Usage: ./server port\n");
 		return (EXIT_FAILURE);
 	}
+	if (ft_isnumbers(argv[1]) != 1)
+	{
+		printf("Usage: ./client addr port\n");
+		return (EXIT_FAILURE);
+	}
 	data.portno = ft_atoi(argv[1]);
 	if (init_server(&data) == -1)
 		return (EXIT_FAILURE);

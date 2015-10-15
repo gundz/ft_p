@@ -9,6 +9,7 @@ SRCS =			\
 				ft_strncmp.c \
 				ft_strstr.c \
 				ft_strnstr.c \
+				ft_isnumbers.c \
 				\
 				ft_putchar.c \
 				ft_putstr.c \
