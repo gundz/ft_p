@@ -35,11 +35,21 @@ int				command_get_function_id(t_command *commands, char *cinput, \
 	const int nb_commands)
 {
 	int					i;
+	int					j;
 
 	i = 0;
 	while (i < nb_commands)
 	{
-		if (ft_strstr(cinput, commands[i].command) != NULL)
+		j = 0;
+		while (cinput[j] == commands[i].command[j])
+		{
+			if (cinput[j] == '\0' || commands[i].command[j] == '\0')
+				break ;
+			j++;
+		}
+		if (cinput[j] == '\0' && commands[i].command[j] == '\0')
+			return (i);
+		if (cinput[j] == ' ' && commands[i].command[j] == '\0')
 			return (i);
 		i++;
 	}

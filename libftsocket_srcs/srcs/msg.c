@@ -34,7 +34,9 @@ void				show_msg(int msg, char *more)
 	if (msg == MSG_CD_ACCESS_DENIED)
 		printf("Error: Access Denied\n");
 	if (msg == MSG_CD_USAGE)
-		printf("Error: Usage cd __path__\n");
-	if (msg == MSG_LCD_USAGE)
-		printf("Error: Usage lcd __path__\n");
+		printf("Error: Usage [cd][lcd] __path__\n");
+	if (msg == MSG_LS_USAGE)
+		printf("Error: Usage [ls][ls]\n");
+	if (msg == MSG_PWD_USAGE)
+		printf("Error: Usage [pwd][lpwd]\n");
 }

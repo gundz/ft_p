@@ -38,11 +38,11 @@ int				command_get_function_id(t_command *commands, char *cinput, \
 
 int				command_put_file(int sockfd, char *command);
 int				command_get_file(int sockfd, char *command);
-int				command_ls(int sockfd);
-int				command_pwd(int sockfd);
+int				command_ls(int sockfd, char *command);
+int				command_pwd(int sockfd, char *command);
 int				command_cd(int sockfd, char *command);
-int				command_lls(void);
-int				command_lpwd(void);
+int				command_lls(int sockfd, char *command);
+int				command_lpwd(int socfd, char *command);
 int				command_lcd(int sockfd, char *command);
 
 int				error_handling(int ret, int msg, char *more);

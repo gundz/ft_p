@@ -15,13 +15,16 @@
 #include <libftsocket.h>
 #include <limits.h>
 #include <sys/wait.h>
+#include <client.h>
 
-int						command_ls(int sockfd)
+int						command_ls(int sockfd, char *command)
 {
 	int					n;
 	char				buf[BUFSIZ + 1];
 	char				*tmp;
 
+	if (check_command_usage(command, 0) == NULL)
+		return (error_handling(-1, MSG_LS_USAGE, NULL));
 	send_int32(sockfd, MSG_LS);
 	while ((n = recv(sockfd, &buf, BUFSIZ, 0)) > 0)
 	{
@@ -35,13 +38,16 @@ int						command_ls(int sockfd)
 		else
 			printf("%s", buf);
 	}
+	(void)sockfd;
 	return (0);
 }
 
-int						command_lls(void)
+int						command_lls(int sockfd, char *command)
 {
 	pid_t				pid;
 
+	if (check_command_usage(command, 0) == NULL)
+		return (error_handling(-1, MSG_LS_USAGE, NULL));
 	pid = fork();
 	if (pid > 0)
 		wait(NULL);
@@ -50,5 +56,6 @@ int						command_lls(void)
 		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
 			printf("Error: lls\n");
 	}
+	(void)sockfd;
 	return (0);
 }

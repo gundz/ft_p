@@ -36,8 +36,8 @@ int						command_lcd(int sockfd, char *command)
 
 	if ((path = check_command_usage(command, 1)) == NULL)
 	{
-		show_msg(MSG_LCD_USAGE, NULL);
-		return (error_handling(-1, MSG_LCD_USAGE, NULL));
+		show_msg(MSG_CD_USAGE, NULL);
+		return (error_handling(-1, MSG_CD_USAGE, NULL));
 	}
 	if (chdir(path) == -1)
 	{
