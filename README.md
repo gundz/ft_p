@@ -3,7 +3,8 @@
 
 ##Commands:
 
-	###remote:
+	remote:
+	-------
 	
 		*get __file__
 		*put __file__
@@ -11,7 +12,8 @@
 		*pwd
 		*cd __path__
 	
-	###local:
+	local:
+	------
 	
 		*lls
 		*lpwd
