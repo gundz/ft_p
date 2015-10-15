@@ -29,7 +29,7 @@ int						command_cd(int sockfd, char *command)
 	show_msg(msg, NULL);
 	return (0);
 }
-#include <stdio.h>
+
 int						command_lcd(int sockfd, char *command)
 {
 	char				*path;
