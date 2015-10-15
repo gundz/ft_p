@@ -23,6 +23,11 @@ void					show_percent(off_t i, off_t size)
 	static double		tmp = 0;
 	double				percent;
 
+	if (size == 0)
+	{
+		printf("\t100%%\n");
+		return ;
+	}
 	percent = get_percent(i, size);
 	if (tmp != percent || tmp == 0)
 	{
