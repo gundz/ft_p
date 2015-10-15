@@ -29,7 +29,7 @@ int						command_cd(int sockfd, char *command)
 	show_msg(msg, NULL);
 	return (0);
 }
-
+#include <stdio.h>
 int						command_lcd(int sockfd, char *command)
 {
 	char				*path;
@@ -40,10 +40,7 @@ int						command_lcd(int sockfd, char *command)
 		return (error_handling(-1, MSG_CD_USAGE, NULL));
 	}
 	if (chdir(path) == -1)
-	{
-		free(path);
 		return (error_handling(-1, MSG_NO_SUCH_FILE, NULL));
-	}
 	(void)sockfd;
 	return (0);
 }

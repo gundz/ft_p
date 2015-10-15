@@ -36,7 +36,7 @@ void				show_msg(int msg, char *more)
 	if (msg == MSG_CD_USAGE)
 		printf("Error: Usage [cd][lcd] __path__\n");
 	if (msg == MSG_LS_USAGE)
-		printf("Error: Usage [ls][ls]\n");
+		printf("Error: Usage [ls][lls]\n");
 	if (msg == MSG_PWD_USAGE)
 		printf("Error: Usage [pwd][lpwd]\n");
 }
