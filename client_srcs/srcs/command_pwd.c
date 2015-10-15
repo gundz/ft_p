@@ -48,6 +48,8 @@ int						command_lpwd(int sockfd, char *command)
 	if (check_command_usage(command, 0) == NULL)
 		return (error_handling(-1, MSG_PWD_USAGE, NULL));
 	pid = fork();
+	if (pid == -1)
+		printf("Error: lpwd\n");
 	if (pid > 0)
 		wait(NULL);
 	else

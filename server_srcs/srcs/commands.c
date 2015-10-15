@@ -67,6 +67,8 @@ int						command_ls(const int sockfd)
 	const int			eof = EOF;
 
 	pid = fork();
+	if (pid == -1)
+		send(sockfd, &eof, sizeof(eof), 0);
 	if (pid > 0)
 	{
 		wait(NULL);
@@ -76,10 +78,7 @@ int						command_ls(const int sockfd)
 	{
 		dup2(sockfd, STDOUT_FILENO);
 		if (execl("/bin/ls", "ls", "-la", NULL) == -1)
-		{
-			perror("execl: ls");
 			send(sockfd, &eof, sizeof(eof), 0);
-		}
 	}
 	return (0);
 }
@@ -90,6 +89,8 @@ int						command_pwd(const int sockfd)
 	const int			eof = EOF;
 
 	pid = fork();
+	if (pid == -1)
+		send(sockfd, &eof, sizeof(eof), 0);
 	if (pid > 0)
 	{
 		wait(NULL);

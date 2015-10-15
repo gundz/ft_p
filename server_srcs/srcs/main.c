@@ -42,8 +42,13 @@ int						main_server(t_data *data)
 	while (1)
 	{
 		if (get_client(&data->serv, &data->cli) == -1)
+		{
+			printf("FORK ERROR\n");
 			return (EXIT_FAILURE);
+		}
 		pid = fork();
+		if (pid == -1)
+			return (EXIT_FAILURE);
 		if (pid == 0)
 		{
 			while (run == 1)

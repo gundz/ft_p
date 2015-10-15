@@ -20,6 +20,8 @@ int						command_ls(const int sockfd)
 	const int			eof = EOF;
 
 	pid = fork();
+	if (pid == -1)
+		send(sockfd, &eof, sizeof(eof), 0);
 	if (pid > 0)
 	{
 		wait(NULL);
