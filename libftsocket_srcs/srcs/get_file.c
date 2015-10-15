@@ -14,7 +14,6 @@
 #include <stdio.h>
 #include <libftsocket.h>
 
-#include <errno.h>
 int					get_file(int sockfd, int fd, void (*f)(off_t, off_t))
 {
 	struct stat		s;
