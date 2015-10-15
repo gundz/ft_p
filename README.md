@@ -2,9 +2,9 @@
 ----
 
 ##Commands:
------------
 
 	###remote:
+	
 		*get __file__
 		*put __file__
 		*ls
@@ -12,6 +12,7 @@
 		*cd __path__
 	
 	###local:
+	
 		*lls
 		*lpwd
 		*lcd __path__
