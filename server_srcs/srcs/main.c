@@ -39,6 +39,7 @@ int						main_server(t_data *data)
 	pid_t				pid;
 
 	run = 1;
+	printf("Server launched on port: %d\n", data->portno);
 	while (1)
 	{
 		if (get_client(&data->serv, &data->cli) == -1)
@@ -54,6 +55,7 @@ int						main_server(t_data *data)
 			while (run == 1)
 				server_commands(data, &run);
 			close(data->cli.fd);
+			return (EXIT_SUCCESS);
 		}
 	}
 	close(data->serv.fd);
